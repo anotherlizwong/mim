@@ -8,4 +8,4 @@ virtualenv --no-site-packages --distribute .env && source .env/bin/activate && p
 ## Requirements
 * Python 2.7
 * Microsoft Visual C++ 9.0 is required. Get it from http://aka.ms/vcpython27
-* `requirements.txt` handles the rest
+* `pip install -r requirements.txt` handles the rest
