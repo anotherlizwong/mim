@@ -35,9 +35,16 @@ def youtube_search(options):
 
 
 def format_result(search_result):
+    search_result["description"] = search_result["snippet"]["description"]
+    if len(search_result["snippet"]["description"]) > helpers.DESCRIPTION_LIMIT:
+        search_result["description"] = search_result.abstract[:helpers.DESCRIPTION_LIMIT]+"..."
+
     video = {"title": search_result["snippet"]["title"],
-             "author": search_result["snippet"]["channelTitle"],
-             "authorURL": CHANNEL_URL + search_result["snippet"]["channelId"],
+             "authors": [
+                 {"name": search_result["snippet"]["channelTitle"],
+                  "url": CHANNEL_URL + search_result["snippet"]["channelId"]}
+             ],
+             "display_description": search_result["description"],
              "description": search_result["snippet"]["description"],
              "date": search_result["snippet"]["publishedAt"],
              "url": VIDEO_URL + search_result["id"]["videoId"],

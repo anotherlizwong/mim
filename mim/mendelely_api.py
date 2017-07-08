@@ -14,7 +14,10 @@ def get_session_from_cookies():
 
 
 def mendeley_search(options):
-    search_results = session.catalog.search()
+    search_results = session.catalog.search(
+        query=options.q,
+        view="client"
+    ).list(page_size=options.max_results).items
 
     docs = []
     for doc in search_results:
@@ -24,17 +27,29 @@ def mendeley_search(options):
 
 
 def format_results(doc):
+    doc.description = doc.abstract
+    if len(doc.abstract) > helpers.DESCRIPTION_LIMIT:
+        doc.description = doc.abstract[:helpers.DESCRIPTION_LIMIT]+"..."
+
     document = {"title": doc.title,
+                "author": doc.source,
                 "authors": doc.authors,
-                "description": doc.description,
-                "url": doc.download_url,
+                "display_description": doc.description,
+                "description": doc.abstract,
+                "date": doc.year,
+                "url": doc.link,
                 }
+
+    return document
 
 
 def example():
     options = helpers.Options("Educational Technology", 25)
 
-    try:
-        print mendeley_search(options)
-    except Exception, e:
-        print "An error %d occurred:\n%s" % (e.resp.status, e.content)
+    # try:
+    print mendeley_search(options)
+    # except Exception, e:
+    #     print "An error occurred:\n%s" % e.message
+
+
+example()
