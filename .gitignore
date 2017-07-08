@@ -103,3 +103,4 @@ env/
 
 # PyCharm project configs
 .idea/
+mim/client_secrets.json
