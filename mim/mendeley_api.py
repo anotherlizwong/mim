@@ -31,7 +31,8 @@ def format_results(doc):
     if len(doc.abstract) > helpers.DESCRIPTION_LIMIT:
         doc.description = doc.abstract[:helpers.DESCRIPTION_LIMIT]+"..."
 
-    document = {"title": doc.title,
+    document = {"id": doc.identifiers.doi,
+                "title": doc.title,
                 "author": doc.source,
                 "authors": doc.authors,
                 "display_description": doc.description,
@@ -46,10 +47,10 @@ def format_results(doc):
 def example():
     options = helpers.Options("Educational Technology", 25)
 
-    # try:
-    print mendeley_search(options)
-    # except Exception, e:
-    #     print "An error occurred:\n%s" % e.message
+    try:
+        print mendeley_search(options)
+    except Exception, e:
+        print "An error occurred:\n%s" % e.message
 
 
-example()
+# example()

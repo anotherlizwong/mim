@@ -39,7 +39,8 @@ def format_result(search_result):
     if len(search_result["snippet"]["description"]) > helpers.DESCRIPTION_LIMIT:
         search_result["description"] = search_result.abstract[:helpers.DESCRIPTION_LIMIT]+"..."
 
-    video = {"title": search_result["snippet"]["title"],
+    video = {"id": search_result["id"]["videoId"],
+             "title": search_result["snippet"]["title"],
              "authors": [
                  {"name": search_result["snippet"]["channelTitle"],
                   "url": CHANNEL_URL + search_result["snippet"]["channelId"]}
@@ -62,4 +63,4 @@ def example():
         print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
 
 
-example()
+# example()

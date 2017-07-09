@@ -6,14 +6,31 @@ app = Flask(__name__)
 app.debug = True
 
 @app.route('/')
-def home():
+def index():
     if 'token' in session:
         return redirect('/listDocuments')
 
     auth = mim.mendeley_api.mendeley.start_authorization_code_flow()
     session['state'] = auth.state
 
-    return render_template('home.html', login_url=(auth.get_login_url()))
+    name = "friend"
+    content_type = "video"
+    time_estimate = "(13:50)"
+    url = "http://127.0.0.1"
+    thumbnail_url = "http://24.media.tumblr.com/c2e147bcdf9901b8296b53e94ffa72fe/tumblr_muh0fiUCCJ1sdauago1_500.gif"
+    thumbnail_width = 498
+    thumbnail_height = 376.5
+    display_description = "Test"
+
+    return render_template('index.html',
+                           name=name,
+                           content_type=content_type,
+                           time_estimate=time_estimate,
+                           url=url,
+                           thumbnail_url=thumbnail_url,
+                           thumbnail_width=thumbnail_width,
+                           thumbnail_height=thumbnail_height,
+                           display_description=display_description)
 
 
 @app.route('/oauth')
