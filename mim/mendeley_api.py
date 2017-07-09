@@ -2,10 +2,10 @@ import helpers
 from mendeley import Mendeley
 from mendeley.session import MendeleySession
 
-MENDELEY_KEY = helpers.secretkey_config("mendeley")
+MENDELEY_APP_ID, MENDELEY_KEY = helpers.secretkey_config("mendeley")
 REDIRECT_URI = 'http://localhost:5000/oauth'
 
-mendeley = Mendeley("4546", MENDELEY_KEY, REDIRECT_URI)
+mendeley = Mendeley(MENDELEY_APP_ID, MENDELEY_KEY, REDIRECT_URI)
 session = mendeley.start_client_credentials_flow().authenticate()
 
 

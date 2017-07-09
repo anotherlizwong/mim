@@ -3,9 +3,9 @@ import json
 DESCRIPTION_LIMIT = 100
 
 def secretkey_config(api):
-    json_data = open("client_secrets.json").read()
+    json_data = open("./mim/client_secrets.json").read()
     data = json.loads(json_data)
-    return data[api]["client_secret"]
+    return data[api]["client_id"], data[api]["client_secret"]
 
 
 class Options:

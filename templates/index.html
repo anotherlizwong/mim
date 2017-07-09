@@ -6,21 +6,21 @@
     </head>
     <body>
         <div id="recommendation-container">
-            <h2>Hey {name},</h2>
+            <h2>Hey {{ name }},</h2>
             <p>I thought you might be interested in this
-                <a href="{url}" target="_blank"><span id="content-type">{content_type}</span></a> I found...</p>
+                <a href="{{ url }}" target="_blank"><span id="content-type">{{ content_type }}</span></a> I found...</p>
             <div id="content-container">
                 <div>
-                    <h3><a href="{url}" target="_blank"><span id="time-estimate">{time_estimate}</span> <span id="title">{title}</span></a></h3>
-                    <p>by <a href="{url}" target="_blank"><span id="author">{author}</span></a></p>
+                    <h3><a href="{{ url }}" target="_blank"><span id="time-estimate">{{ time_estimate }}</span> <span id="title">{{ title }}</span></a></h3>
+                    <p>by <a href="{{ url }}" target="_blank"><span id="author">{{ author }}</span></a></p>
                 </div>
                 <div id="thumbnail-container">
-                    <a href="{url}" target="_blank">
-                        <img id="thumbnail" src="{thumbnail_url}" height="{thumbnail_height}" width="{thumbnail_width}">
+                    <a href="{{ url }}" target="_blank">
+                        <img id="thumbnail" src="{{ thumbnail_url }}" height="{{ thumbnail_height }}" width="{{ thumbnail_width }}">
                     </a>
                 </div>
                 <div id="description-container">
-                    <p>{display_description}</p>
+                    <p>{{ display_description }}</p>
                 </div>
                 <div id="button-container">
                     <button><i class="thumbs-down"></i> Ehh... Not great</button>

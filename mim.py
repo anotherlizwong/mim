@@ -11,7 +11,6 @@ def index():
         return redirect('/listDocuments')
 
     auth = mim.mendeley_api.mendeley.start_authorization_code_flow()
-    session['state'] = auth.state
 
     name = "friend"
     content_type = "video"
