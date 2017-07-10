@@ -15,7 +15,7 @@ youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
                 developerKey=DEVELOPER_KEY)
 
 
-def youtube_search(options):
+def search(options):
     # Call the search.list method to retrieve results matching the specified
     # query term.
     search_response = youtube.search().list(
@@ -35,17 +35,13 @@ def youtube_search(options):
 
 
 def format_result(search_result):
-    search_result["description"] = search_result["snippet"]["description"]
-    if len(search_result["snippet"]["description"]) > helpers.DESCRIPTION_LIMIT:
-        search_result["description"] = search_result.abstract[:helpers.DESCRIPTION_LIMIT]+"..."
-
-    video = {"id": search_result["id"]["videoId"],
+    video = {"content_type": "video",
+             "id": search_result["id"]["videoId"],
              "title": search_result["snippet"]["title"],
              "authors": [
                  {"name": search_result["snippet"]["channelTitle"],
                   "url": CHANNEL_URL + search_result["snippet"]["channelId"]}
              ],
-             "display_description": search_result["description"],
              "description": search_result["snippet"]["description"],
              "date": search_result["snippet"]["publishedAt"],
              "url": VIDEO_URL + search_result["id"]["videoId"],
@@ -58,7 +54,7 @@ def example():
     options = helpers.Options("Educational Technology", 25)
 
     try:
-        print youtube_search(options)
+        print search(options)
     except HttpError, e:
         print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
 

@@ -1,6 +1,5 @@
 import json
 
-DESCRIPTION_LIMIT = 100
 
 def secretkey_config(api):
     json_data = open("./mim/client_secrets.json").read()
