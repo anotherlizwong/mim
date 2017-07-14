@@ -1,10 +1,15 @@
-from flask import Flask, redirect, render_template, request, session
+from flask import Flask, redirect, render_template, request, session, flash, url_for
+from flask.ext.bcrypt import Bcrypt
+from flask.ext.csrf import csrf
 import mim.mendeley_api
 import mim.youtube_api
 import mim.core as core
+from mim.models import *
 
 app = Flask(__name__)
-app.debug = True
+app.config.from_object('settings')
+bcrypt = Bcrypt(app)
+csrf(app)
 
 @app.route('/')
 def index():
@@ -21,15 +26,15 @@ def index():
                            name=name)
 
 
-@app.route('/oauth')
-def auth_return():
-    auth = mim.mendeley_api.mendeley.start_authorization_code_flow(state=session['state'])
-    mendeley_session = auth.authenticate(request.url)
-
-    session.clear()
-    session['token'] = mendeley_session.token
-
-    return redirect('/listDocuments')
+# @app.route('/oauth')
+# def auth_return():
+#     auth = mim.mendeley_api.mendeley.start_authorization_code_flow(state=session['state'])
+#     mendeley_session = auth.authenticate(request.url)
+#
+#     session.clear()
+#     session['token'] = mendeley_session.token
+#
+#     return redirect('/listDocuments')
 
 
 @app.route('/listDocuments')
@@ -90,6 +95,27 @@ def logout():
     session.pop('token', None)
     return redirect('/')
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        try:
+            this_user = User.objects.get(email=request.form['username'])
+            if request.form['username'] != this_user.email:
+                error = 'Invalid username'
+            elif bcrypt.check_password_hash(this_user.password, request.form['password']) == False:
+                error = 'Invalid password'
+            else:
+                session['logged_in'] = True
+                session['this_user'] = {'first_name':this_user.first_name}
+
+                flash('You were logged in')
+                return redirect(url_for('index'))
+        except:
+            flash('User does not exist')
+    return render_template('login.html', error=error)
+
 
 if __name__ == '__main__':
+    app.debug = app.config['DEBUG']
     app.run()

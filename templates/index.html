@@ -5,31 +5,33 @@
         <title>Recommendation Engine</title>
     </head>
     <body>
-        <div id="recommendation-container">
-            <h2>Hey {{ name }},</h2>
-            <p>I thought you might be interested in this
-                <a href="{{ rec.url }}" target="_blank"><span id="content-type">{{ rec.content_type }}</span></a> I found...</p>
-            <div id="content-container">
-                <div>
-                    <h3><a href="{{ rec.url }}" target="_blank"><span id="time-estimate">{{ rec.time_estimate }}</span> <span id="title">{{ rec.title }}</span></a></h3>
-                    <p>by <a href="{{ rec.author['url'] }}" target="_blank"><span id="author">{{ rec.author['name'] }}</span></a></p>
-                </div>
-                <div id="thumbnail-container">
-                    <a href="{{ rec.url }}" target="_blank">
-                        <img id="thumbnail" src="{{ rec.thumbnail_url }}" height="{{ rec.thumbnail_height }}" width="{{ rec.thumbnail_width }}">
-                    </a>
-                </div>
-                <div id="description-container">
-                    <p>{{ rec.description }}</p>
-                </div>
-                <div id="button-container">
-                    <button><i class="thumbs-down"></i> Ehh... Not great</button>
-                    <button><i class="thumbs-up"></i> That was interesting!</button>
+        <form action="/record" method="post">
+            <div id="recommendation-container">
+                <h2>Hey {{ name }},</h2>
+                <p>I thought you might be interested in this
+                    <a href="{{ rec.url }}" target="_blank"><span id="content-type">{{ rec.content_type }}</span></a> I found...</p>
+                <div id="content-container">
+                    <div>
+                        <h3><a href="{{ rec.url }}" target="_blank"><span id="time-estimate">{{ rec.time_estimate }}</span> <span id="title">{{ rec.title }}</span></a></h3>
+                        <p>by <a href="{{ rec.author['url'] }}" target="_blank"><span id="author">{{ rec.author['name'] }}</span></a></p>
+                    </div>
+                    <div id="thumbnail-container">
+                        <a href="{{ rec.url }}" target="_blank">
+                            <img id="thumbnail" src="{{ rec.thumbnail_url }}" height="{{ rec.thumbnail_height }}" width="{{ rec.thumbnail_width }}">
+                        </a>
+                    </div>
+                    <div id="description-container">
+                        <p>{{ rec.description }}</p>
+                    </div>
+                    <div id="button-container">
+                        <button type="submit" value="false"><i class="thumbs-down"></i> Ehh... Not great</button>
+                        <button type="submit" value="true"><i class="thumbs-up"></i> That was interesting!</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div id="reroll-container">
-            <button><i class="die"></i> Give me another!</button>
-        </div>
+            <div id="reroll-container">
+                <button type="submit" value="new"><i class="die"></i> Give me another!</button>
+            </div>
+        </form>
     </body>
 </html>
