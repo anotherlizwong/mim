@@ -2,7 +2,7 @@
 
 from apiclient.discovery import build
 from apiclient.errors import HttpError
-from oauth2client.tools import argparser
+
 import helpers
 
 YOUTUBE_API_SERVICE_NAME = "youtube"

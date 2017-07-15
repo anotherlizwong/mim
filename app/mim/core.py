@@ -1,7 +1,8 @@
 import random
-import youtube_api as youtube
-import mendeley_api as mendeley
+
 import helpers
+import mendeley_api as mendeley
+import youtube_api as youtube
 
 DESCRIPTION_LIMIT = 100
 MODULES = [youtube, mendeley]

@@ -1,14 +1,12 @@
-from flask import Flask, redirect, render_template, request, session, flash, url_for
+from flask import redirect, render_template, request, session, flash, url_for
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.csrf import csrf
-import mendeley_api
-import youtube_api
+
 import core
+import mendeley_api
 from app import RegistrationForm
 from models import *
 
-app = Flask(__name__)
-app.config.from_object('settings')
 bcrypt = Bcrypt(app)
 csrf(app)
 
@@ -22,7 +20,7 @@ def index():
     rec = core.get_random()
     name = "friend"
 
-    return render_template('index.html',
+    return render_template('templates/index.html',
                            rec=rec,
                            name=name)
 
@@ -151,8 +149,3 @@ def register_page():
 
     except Exception as e:
         return (str(e))
-
-
-if __name__ == '__main__':
-    app.debug = app.config['DEBUG']
-    app.run()
