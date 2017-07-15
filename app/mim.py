@@ -4,7 +4,7 @@ from flask.ext.csrf import csrf
 import mendeley_api
 import youtube_api
 import core
-from mim import RegistrationForm
+from app import RegistrationForm
 from models import *
 
 app = Flask(__name__)
