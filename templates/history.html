@@ -2,11 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Mendeley Python Example</title>
+    <title>Recommendation History</title>
 </head>
 <body>
 <a href="/logout">Logout</a>
-<h1>{{name}}'s documents</h1>
+<h1>{{name}}'s past recommendations</h1>
+
+<form action="/search" method="GET">
+    Search:
+    <input type="text" name="search">
+    <input type="submit">
+</form>
 
 <table>
     {% for doc in docs %}
@@ -21,11 +27,7 @@
 
 <hr>
 
-<form action="/metadataLookup" method="GET">
-    DOI lookup:
-    <input type="text" name="doi">
-    <input type="submit">
-</form>
+
 
 </body>
 </html>

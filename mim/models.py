@@ -8,6 +8,9 @@ client = MongoClient('localhost',27017)
 
 db = client.mim
 resources = db.resources
+users = db.users
+user_history = db.user_history
+
 
 class User(Document):
     email = StringField(required=True)
@@ -15,5 +18,10 @@ class User(Document):
     last_name = StringField(max_length=50)
     password = StringField(max_length=200)
 
+
+class History(Document):
+    user = StringField(required=True)
+    opinion = IntField(required=True)
+    rec_id = ObjectIdField()
 
 
