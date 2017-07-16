@@ -8,7 +8,10 @@ import helpers
 
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
-YOUTUBE_APP_ID, DEVELOPER_KEY = os.environ['YOUTUBE_ID'], os.environ['YOUTUBE_SECRET'] # helpers.secretkey_config("youtube")
+if 'YOUTUBE_ID' in os.environ:
+    YOUTUBE_APP_ID, DEVELOPER_KEY = os.environ['YOUTUBE_ID'], os.environ['YOUTUBE_SECRET'] # helpers.secretkey_config("youtube")
+else:
+    YOUTUBE_APP_ID, DEVELOPER_KEY = helpers.secretkey_config("youtube")
 VIDEO_URL = "https://youtube.com/watch?v="
 CHANNEL_URL = "https://youtube.com/channel/"
 

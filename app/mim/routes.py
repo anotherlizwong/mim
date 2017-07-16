@@ -14,7 +14,10 @@ import app.mim.helpers as util
 
 
 flask_app = Flask(__name__)
-flask_app.secret_key = os.environ['SECRET_KEY']
+if 'SECRET_KEY' in os.environ:
+    flask_app.secret_key = os.environ['SECRET_KEY']
+else:
+    flask_app.secret_key = "LOCAL"
 
 # bcrypt = Bcrypt(flask_app)
 # csrf(flask_app)
