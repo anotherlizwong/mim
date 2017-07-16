@@ -1,0 +1,24 @@
+{% block body %}
+
+<body>
+	<div class = "container">
+		<h4>Register</h4>
+		<br>
+		<form method=post action="/register/">
+            <label>Email:</label>
+            <div><input type="email" name="email"></div>
+            <label>Password:</label>
+            <div><input type="password" name="password"></div>
+            <label>Confirm Password</label>
+            <div><input type="password" name="confirm"></div>
+			<div><input type=submit value=Register></div>
+		</form>
+
+		{% if error %}
+			<p class="error"><strong>Error:</strong>{{error}}</p>
+		{% endif %}
+
+	</div>
+</body>
+
+{% endblock %}
