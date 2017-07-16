@@ -7,6 +7,7 @@ from models import *
 
 import core
 import mendeley_api
+import app.mim.helpers as util
 # from app.mim import flask_app
 
 flask_app = Flask(__name__)
@@ -16,7 +17,7 @@ bcrypt = Bcrypt(flask_app)
 csrf(flask_app)
 
 
-@flask_app.route('/')
+@flask_app.route('/home')
 def index():
     if 'token' in session:
         return redirect('/history')
@@ -44,7 +45,7 @@ def index():
 @flask_app.route('/history')
 def list_documents():
     if 'token' not in session:
-        return redirect('/')
+        return redirect('/home')
 
     mendeley_session = mendeley_api.get_session_from_cookies()
 
@@ -57,7 +58,7 @@ def list_documents():
 @flask_app.route('/document')
 def get_document():
     if 'token' not in session:
-        return redirect('/')
+        return redirect('/home')
 
     mendeley_session = mendeley_api.get_session_from_cookies()
 
@@ -70,7 +71,7 @@ def get_document():
 @flask_app.route('/search')
 def metadata_lookup():
     if 'token' not in session:
-        return redirect('/')
+        return redirect('/home')
 
     mendeley_session = mendeley_api.get_session_from_cookies()
 
@@ -83,7 +84,7 @@ def metadata_lookup():
 @flask_app.route('/download')
 def download():
     if 'token' not in session:
-        return redirect('/')
+        return redirect('/home')
 
     mendeley_session = mendeley_api.get_session_from_cookies()
 
@@ -97,63 +98,81 @@ def download():
 @flask_app.route('/logout')
 def logout():
     session.pop('token', None)
-    return redirect('/')
+    return redirect('/home')
+
 
 @flask_app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
         try:
-            this_user = User.objects.get(email=request.form['username'])
-            if request.form['username'] != this_user.email:
+            # this_user = User.objects.get(email=request.form['username'])
+            this_user = users.find_one({'email': request.form['email']})
+            if request.form['email'] != this_user.email:
                 error = 'Invalid username'
-            elif bcrypt.check_password_hash(this_user.password, request.form['password']) == False:
+            elif bcrypt.check_password_hash(this_user.password, request.form['password']) is False:
                 error = 'Invalid password'
             else:
                 session['logged_in'] = True
-                session['this_user'] = {'first_name':this_user.first_name}
+                session['username'] = this_user.email
+                session['this_user'] = this_user.name
 
-                flash('You were logged in')
+                flash('Logging in...')
                 return redirect(url_for('index'))
         except:
             flash('User does not exist')
     return render_template('login.html', error=error)
 
 
-@flask_app.route('/register/', methods=["GET", "POST"])
+@flask_app.route('/register', methods=["GET", "POST"])
 def register_page():
     try:
         form = RegistrationForm(request.form)
 
         if request.method == "POST" and form.validate():
-            username = form.username.data
-            firstname = form.firstname.data
-            lastname = form.lastname.data
             email = form.email.data
+            name = form.name.data
+            gender = form.gender.data
+            year_of_birth = util.get_year(form.age)
             password = bcrypt.hashpw(str(form.password.data), bcrypt.gensalt())
 
             # check username for duplicate
-            usernameExists = False
-            if usernameExists:
+            result = users.insert_one(
+                {
+                    "email":    email,
+                    "password": password,
+                    "name":     name,
+                    "gender":   gender,
+                    "yob":      year_of_birth,
+                }
+            )
+            if result.acknowledged is False:
                 flash("That username is already taken, please choose another")
                 return render_template('register.html', form=form)
 
             else:
-                # add user
-
                 flash("Thanks for registering!")
 
                 session['logged_in'] = True
-                session['username'] = username
-                session['this_user'] = {}
-                session['this_user']['firstname'] = firstname
-                session['this_user']['lastname'] = firstname
+                session['username'] = email
+                session['this_user'] = name
 
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('/login'))
 
         return render_template("register.html", form=form)
 
     except Exception as e:
         return (str(e))
 
-flask_app.run(debug=True)
+
+@flask_app.route("/logout")
+# @login_required
+def logout():
+    session.clear()
+    flash("You have been logged out!")
+    return redirect(url_for('/login'))
+
+
+# can leave this in probably...
+if __name__ == '__main__':
+    flask_app.run(debug=True)

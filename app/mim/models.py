@@ -9,14 +9,16 @@ client = MongoClient('localhost',27017)
 db = client.mim
 resources = db.resources
 users = db.users
+users.create_index([('email', pymongo.ASCENDING)], unique=True)
 user_history = db.user_history
 
 
 class User(Document):
-    email = StringField(required=True)
-    first_name = StringField(max_length=50)
-    last_name = StringField(max_length=50)
+    email = StringField(required=True, unique=True)
     password = StringField(max_length=200)
+    name = StringField(max_length=100)
+    gender = StringField(max_length=20)
+    yob = IntField()
 
 
 class History(Document):
