@@ -2,15 +2,39 @@
 
 <body>
 	<div class = "container">
-		<h4>Register</h4>
-		<br>
+		<h4>Sign up!</h4>
 		<form method=post action="/register/">
-            <label>Email:</label>
-            <div><input type="email" name="email"></div>
-            <label>Password:</label>
-            <div><input type="password" name="password"></div>
-            <label>Confirm Password</label>
-            <div><input type="password" name="confirm"></div>
+            <fieldset>
+                <legend>Profile</legend>
+                <label>Name</label>
+                <div><input type="text" name="name"></div>
+                <label>Gender</label>
+                <div>
+                    <label><input type="radio" name="gender" value="male"> Male</label>
+                    <label><input type="radio" name="gender" value="female"> Female</label>
+                    <label><input type="radio" name="gender" value="other"> Other</label>
+                    <label><input type="radio" name="gender" value="na" checked> Rather not say</label>
+                </div>
+                <label>Age</label>
+                <div>
+                    <input type="number"> (optional)
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Account</legend>
+                <label>Email (username)</label>
+                <div><input type="email" name="email" required></div>
+                <label>Password</label>
+                <div><input type="password" name="password" required></div>
+                <label>Confirm Password</label>
+                <div><input type="password" name="confirm" required></div>
+            </fieldset>
+            <fieldset>
+                <legend>Terms of Service</legend>
+                <p>This app is a tool that pulls in data from 3rd party services. We do not screen any content manually and cannot guarantee appropriate or legitimate responses for all users.</p>
+                <p>As a user of this tool, I understand and will not hold the developer of this tool accountable for any damages that may result from inappropriate results or misinformation.</p>
+                <label><input type="checkbox" name="tos" required> I understand and agree to the Terms of Service</label>
+            </fieldset>
 			<div><input type=submit value=Register></div>
 		</form>
 
