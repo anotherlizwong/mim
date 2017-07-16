@@ -1,1 +1,1 @@
-web: gunicorn --chdir app/mim/ routes:app
+web: gunicorn --chdir app/ runserver:app

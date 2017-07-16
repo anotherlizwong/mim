@@ -1,3 +1,5 @@
-from mim import flask_app
+from app.mim.routes import flask_app
 
-flask_app.run(debug=True)
+
+if __name__ == "__main__":
+    flask_app.run(debug=True)

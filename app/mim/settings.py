@@ -1,3 +1,0 @@
-DEBUG = True
-
-SECRET_KEY = 'CWiy7V4rsP@!$$@e1WNWAIQcc113!'

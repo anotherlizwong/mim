@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, redirect, render_template, request, session, flash, url_for
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.csrf import csrf
@@ -10,8 +12,9 @@ import mendeley_api
 import app.mim.helpers as util
 # from app.mim import flask_app
 
+
 flask_app = Flask(__name__)
-flask_app.config.from_pyfile("settings.py")
+flask_app.secret_key = os.environ['SECRET_KEY']
 
 bcrypt = Bcrypt(flask_app)
 csrf(flask_app)
