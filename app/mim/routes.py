@@ -1,8 +1,8 @@
 import os
 
 from flask import Flask, redirect, render_template, request, session, flash, url_for
-from flask.ext.bcrypt import Bcrypt
-from flask.ext.csrf import csrf
+# from flask.ext.bcrypt import Bcrypt
+# from flask.ext.csrf import csrf
 
 from app.mim import RegistrationForm
 from models import *
@@ -16,8 +16,8 @@ import app.mim.helpers as util
 flask_app = Flask(__name__)
 flask_app.secret_key = os.environ['SECRET_KEY']
 
-bcrypt = Bcrypt(flask_app)
-csrf(flask_app)
+# bcrypt = Bcrypt(flask_app)
+# csrf(flask_app)
 
 
 # def login_required(f):
@@ -109,8 +109,8 @@ def login():
             this_user = users.find_one({'email': request.form['email']})
             if request.form['email'] != this_user.email:
                 error = 'Invalid username'
-            elif bcrypt.check_password_hash(this_user.password, request.form['password']) is False:
-                error = 'Invalid password'
+            # elif bcrypt.check_password_hash(this_user.password, request.form['password']) is False:
+            #     error = 'Invalid password'
             else:
                 session['logged_in'] = True
                 session['username'] = this_user.email
@@ -139,7 +139,7 @@ def register():
 
         if request.method == "POST" and form.validate():
             email = form.email.data
-            password = bcrypt.hashpw(str(form.password.data), bcrypt.gensalt())
+            # password = bcrypt.hashpw(str(form.password.data), bcrypt.gensalt())
             name = form.name.data
             gender = form.gender.data
             year_of_birth = util.get_year(form.age.data)
@@ -149,7 +149,7 @@ def register():
             result = users.insert_one(
                 {
                     "email":    email,
-                    "password": password,
+                    # "password": password,
                     "name":     name,
                     "gender":   gender,
                     "yob":      year_of_birth,
