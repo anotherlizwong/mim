@@ -97,7 +97,7 @@ def download():
     return redirect(doc_file.download_url)
 
 
-@flask_app.route('/login/', methods=['GET', 'POST'])
+@flask_app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
@@ -129,7 +129,7 @@ def logout():
     return redirect(url_for('/login'))
 
 
-@flask_app.route('/register/', methods=["GET", "POST"])
+@flask_app.route('/register', methods=["GET", "POST"])
 def register():
     try:
         form = RegistrationForm(request.form)
