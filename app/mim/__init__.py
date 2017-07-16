@@ -1,4 +1,4 @@
-from wtforms import Form, BooleanField, StringField, PasswordField, validators
+from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField
 from flask import Flask
 
 # flask_app = Flask(__name__)
@@ -6,14 +6,20 @@ from flask import Flask
 
 
 class RegistrationForm(Form):
-    username = StringField('Username', [validators.Length(min=4, max=20)])
-    email = StringField('Email Address', [validators.Length(min=6, max=50)])
-    password = PasswordField('New Password', [
+    email = StringField('email', [validators.Length(min=6, max=50)])
+    password = PasswordField('password', [
         validators.DataRequired(),
         validators.EqualTo('confirm', message='Passwords must match')
     ])
-    confirm = PasswordField('Repeat Password')
-    accept_tos = BooleanField('I accept the Terms of Service and Privacy Notice (updated Jan 22, 2015)', [validators.DataRequired()])
+    confirm = PasswordField('confirm')
+    accept_tos = BooleanField('tos', [validators.DataRequired()])
+    name = StringField('name', [validators.Length(min=1, max=100), validators.DataRequired()])
+    gender = StringField('gender', [validators.DataRequired()])
+    age = IntegerField('age', [validators.Optional(),
+                               validators.NumberRange(
+                                   13,150000, message="Must be at least 13 to use this application."
+                               )])
+
 
 
 class Options:

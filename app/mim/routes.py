@@ -31,16 +31,6 @@ def index():
                            rec=rec,
                            name=name)
 
-# @app.route('/oauth')
-# def auth_return():
-#     auth = mim.mendeley_api.mendeley.start_authorization_code_flow(state=session['state'])
-#     mendeley_session = auth.authenticate(request.url)
-#
-#     session.clear()
-#     session['token'] = mendeley_session.token
-#
-#     return redirect('/listDocuments')
-
 
 @flask_app.route('/history')
 def list_documents():
@@ -95,12 +85,6 @@ def download():
     return redirect(doc_file.download_url)
 
 
-@flask_app.route('/logout')
-def logout():
-    session.pop('token', None)
-    return redirect('/home')
-
-
 @flask_app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -124,17 +108,27 @@ def login():
     return render_template('login.html', error=error)
 
 
+# @login_required
+@flask_app.route('/logout')
+def logout():
+    session.pop('token', None)
+    session.clear()
+    flash("You have been logged out!")
+    return redirect(url_for('/login'))
+
+
 @flask_app.route('/register', methods=["GET", "POST"])
-def register_page():
+def register():
     try:
         form = RegistrationForm(request.form)
 
         if request.method == "POST" and form.validate():
             email = form.email.data
+            password = bcrypt.hashpw(str(form.password.data), bcrypt.gensalt())
             name = form.name.data
             gender = form.gender.data
             year_of_birth = util.get_year(form.age)
-            password = bcrypt.hashpw(str(form.password.data), bcrypt.gensalt())
+            tos_check_date = util.get_today()
 
             # check username for duplicate
             result = users.insert_one(
@@ -144,6 +138,7 @@ def register_page():
                     "name":     name,
                     "gender":   gender,
                     "yob":      year_of_birth,
+                    "tos":      tos_check_date
                 }
             )
             if result.acknowledged is False:
@@ -163,14 +158,6 @@ def register_page():
 
     except Exception as e:
         return (str(e))
-
-
-@flask_app.route("/logout")
-# @login_required
-def logout():
-    session.clear()
-    flash("You have been logged out!")
-    return redirect(url_for('/login'))
 
 
 # can leave this in probably...

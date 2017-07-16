@@ -13,8 +13,13 @@ def get_year(age):
     now = datetime.datetime.now()
     return now.year-age
 
+
 def get_age(year):
     if not year:
         return
     now = datetime.datetime.now()
     return now.year-year
+
+
+def get_today():
+    return datetime.datetime.now()
