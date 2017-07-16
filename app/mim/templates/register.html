@@ -3,40 +3,40 @@
 <body>
 	<div class="container">
 		<h3>Sign up!</h3>
-		<form method=post action="{{url_for('register')}}">
+		<form method=post action="{{ url_for('register') }}">
             <fieldset>
                 <legend>Profile</legend>
-                <label>{{form.name.label}}</label>
-                <div>{{form.name()}}</div>
-                <label>{{form.gender.label}}</label>
+                <label>{{ form.name.label }}</label>
+                <div>{{ form.name() }}</div>
+                <label>{{ form.gender.label }}</label>
                 <div>
-                    {{form.gender()}}
+                    {{ form.gender() }}
                 </div>
-                <label>{{form.age.label}}</label>
+                <label>{{ form.age.label }}</label>
                 <div>
-                    {{form.age()}} (optional)
+                    {{ form.age() }} (optional)
                 </div>
             </fieldset>
             <fieldset>
                 <legend>Account</legend>
-                <label>{{form.email.label}}</label>
-                <div>{{form.email()}}</div>
-                <label>{{form.password.label}}</label>
-                <div>{{form.password()}}</div>
-                <label>{{form.confirm.label}}</label>
-                <div>{{form.confirm()}}</div>
+                <label>{{ form.email.label }}</label>
+                <div>{{ form.email() }}</div>
+                <label>{{ form.password.label }}</label>
+                <div>{{ form.password() }}</div>
+                <label>{{ form.confirm.label }}</label>
+                <div>{{ form.confirm() }}</div>
             </fieldset>
             <fieldset>
                 <legend>Terms of Service</legend>
                 <p>This app is a tool that pulls in data from 3rd party services. We do not screen any content manually and cannot guarantee appropriate or legitimate responses for all users.</p>
                 <p>As a user of this tool, I understand and will not hold the developer of this tool accountable for any damages that may result from inappropriate results or misinformation.</p>
-                <label>{{form.tos()}} {{form.tos.label}}</label>
+                <label>{{ form.tos() }} {{ form.tos.label }}</label>
             </fieldset>
-            <div><button type=submit>Register</button></div>
+            <div>{{ form.submit() }}</div>
 		</form>
 
 		{% if error %}
-			<p class="error"><strong>Error:</strong>{{error}}</p>
+			<p class="error"><strong>Error:</strong>{{ error }}</p>
 		{% endif %}
 
 	</div>

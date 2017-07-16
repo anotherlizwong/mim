@@ -1,4 +1,5 @@
-from wtforms import Form, BooleanField, RadioField, StringField, PasswordField, validators, IntegerField, Field
+from wtforms import Form, BooleanField, RadioField, StringField, PasswordField, validators, IntegerField, Field, \
+    SubmitField
 from flask import Flask
 from wtforms.fields.html5 import EmailField
 
@@ -25,7 +26,18 @@ class RegistrationForm(Form):
                                    min=13, message="Must be at least 13 to use this application."
                                )])
     tos = BooleanField(' I understand and agree to the Terms of Service', [validators.DataRequired()])
+    submit = SubmitField("Register")
 
+
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+
+
+    def validate(self):
+        if not Form.validate(self):
+            return False
+        else:
+            return True
 
 
 class Options:
@@ -33,13 +45,3 @@ class Options:
         self.q = q
         self.max_results = max_results
 
-# def login_required(f):
-#     @wraps(f)
-#     def wrap(*args, **kwargs):
-#         if 'logged_in' in session:
-#             return f(*args, **kwargs)
-#         else:
-#             flash("You need to login first")
-#             return redirect(url_for('login_page'))
-#
-#     return wrap
