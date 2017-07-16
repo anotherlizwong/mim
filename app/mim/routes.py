@@ -1,16 +1,22 @@
-from flask import redirect, render_template, request, session, flash, url_for
+from flask import Flask, redirect, render_template, request, session, flash, url_for
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.csrf import csrf
 
-import core
-import mendeley_api
-from app import RegistrationForm
+from app.mim import RegistrationForm
 from models import *
 
-bcrypt = Bcrypt(app)
-csrf(app)
+import core
+import mendeley_api
+# from app.mim import flask_app
 
-@app.route('/')
+flask_app = Flask(__name__)
+flask_app.config.from_pyfile("settings.py")
+
+bcrypt = Bcrypt(flask_app)
+csrf(flask_app)
+
+
+@flask_app.route('/')
 def index():
     if 'token' in session:
         return redirect('/history')
@@ -20,7 +26,7 @@ def index():
     rec = core.get_random()
     name = "friend"
 
-    return render_template('templates/index.html',
+    return render_template('index.html',
                            rec=rec,
                            name=name)
 
@@ -35,7 +41,7 @@ def index():
 #     return redirect('/listDocuments')
 
 
-@app.route('/history')
+@flask_app.route('/history')
 def list_documents():
     if 'token' not in session:
         return redirect('/')
@@ -48,7 +54,7 @@ def list_documents():
     return render_template('history.html', name=name, docs=docs)
 
 
-@app.route('/document')
+@flask_app.route('/document')
 def get_document():
     if 'token' not in session:
         return redirect('/')
@@ -61,7 +67,7 @@ def get_document():
     return render_template('metadata.html', doc=doc)
 
 
-@app.route('/search')
+@flask_app.route('/search')
 def metadata_lookup():
     if 'token' not in session:
         return redirect('/')
@@ -74,7 +80,7 @@ def metadata_lookup():
     return render_template('history.html', doc=doc)
 
 
-@app.route('/download')
+@flask_app.route('/download')
 def download():
     if 'token' not in session:
         return redirect('/')
@@ -88,12 +94,12 @@ def download():
     return redirect(doc_file.download_url)
 
 
-@app.route('/logout')
+@flask_app.route('/logout')
 def logout():
     session.pop('token', None)
     return redirect('/')
 
-@app.route('/login', methods=['GET', 'POST'])
+@flask_app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
@@ -114,7 +120,7 @@ def login():
     return render_template('login.html', error=error)
 
 
-@app.route('/register/', methods=["GET", "POST"])
+@flask_app.route('/register/', methods=["GET", "POST"])
 def register_page():
     try:
         form = RegistrationForm(request.form)
@@ -149,3 +155,5 @@ def register_page():
 
     except Exception as e:
         return (str(e))
+
+flask_app.run(debug=True)

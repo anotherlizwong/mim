@@ -1,8 +1,8 @@
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from flask import Flask
 
-app = Flask(__name__)
-app.config.from_pyfile("settings.py")
+# flask_app = Flask(__name__)
+# flask_app.config.from_pyfile("settings.py")
 
 
 class RegistrationForm(Form):

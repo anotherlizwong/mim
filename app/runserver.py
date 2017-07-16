@@ -1,5 +1,3 @@
-from mim import app
+from mim import flask_app
 
-if __name__ == '__main__':
-    app.debug = app.config['DEBUG']
-    app.run()
+flask_app.run(debug=True)
