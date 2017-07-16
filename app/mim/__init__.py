@@ -1,24 +1,30 @@
-from wtforms import Form, BooleanField, StringField, PasswordField, validators, IntegerField
+from wtforms import Form, BooleanField, RadioField, StringField, PasswordField, validators, IntegerField, Field
 from flask import Flask
+from wtforms.fields.html5 import EmailField
 
 # flask_app = Flask(__name__)
 # flask_app.config.from_pyfile("settings.py")
 
 
 class RegistrationForm(Form):
-    email = StringField('email', [validators.Length(min=6, max=50)])
-    password = PasswordField('password', [
-        validators.DataRequired(),
-        validators.EqualTo('confirm', message='Passwords must match')
-    ])
-    confirm = PasswordField('confirm')
-    accept_tos = BooleanField('tos', [validators.DataRequired()])
-    name = StringField('name', [validators.Length(min=1, max=100), validators.DataRequired()])
-    gender = StringField('gender', [validators.DataRequired()])
-    age = IntegerField('age', [validators.Optional(),
+    email = EmailField('Email (username)', [validators.Length(min=6, max=50),
+                                            validators.DataRequired(),
+                                            validators.Email()])
+    password = PasswordField('Password', [validators.DataRequired(),
+                                          validators.EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField('Confirm Password')
+    name = StringField('name', [validators.Length(min=1, max=100),
+                                validators.DataRequired()])
+    gender = RadioField('Gender', [validators.DataRequired()],
+                        choices=[("male", "Male"),
+                                 ("female", "Female"),
+                                 ("other", "Other"),
+                                 ("unknown", "I'd rather not say")])
+    age = IntegerField('Age', [validators.Optional(),
                                validators.NumberRange(
-                                   13,150000, message="Must be at least 13 to use this application."
+                                   min=13, message="Must be at least 13 to use this application."
                                )])
+    tos = BooleanField(' I understand and agree to the Terms of Service', [validators.DataRequired()])
 
 
 

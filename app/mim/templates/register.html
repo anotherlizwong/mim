@@ -1,41 +1,38 @@
 {% block body %}
 
 <body>
-	<div class = "container">
-		<h4>Sign up!</h4>
-		<form method=post action="/register/">
+	<div class="container">
+		<h3>Sign up!</h3>
+		<form method=post action="{{url_for('register')}}">
             <fieldset>
                 <legend>Profile</legend>
-                <label>Name</label>
-                <div><input type="text" name="name"></div>
-                <label>Gender</label>
+                <label>{{form.name.label}}</label>
+                <div>{{form.name()}}</div>
+                <label>{{form.gender.label}}</label>
                 <div>
-                    <label><input type="radio" name="gender" value="male"> Male</label>
-                    <label><input type="radio" name="gender" value="female"> Female</label>
-                    <label><input type="radio" name="gender" value="other"> Other</label>
-                    <label><input type="radio" name="gender" value="unknown" checked> Rather not say</label>
+                    {{form.gender()}}
                 </div>
-                <label>Age</label>
+                <label>{{form.age.label}}</label>
                 <div>
-                    <input type="number" name="age"> (optional)
+                    {{form.age()}} (optional)
                 </div>
             </fieldset>
             <fieldset>
                 <legend>Account</legend>
-                <label>Email (username)</label>
-                <div><input type="email" name="email" required></div>
-                <label>Password</label>
-                <div><input type="password" name="password" required></div>
-                <label>Confirm Password</label>
-                <div><input type="password" name="confirm" required></div>
+                <label>{{form.email.label}}</label>
+                <div>{{form.email()}}</div>
+                <label>{{form.password.label}}</label>
+                <div>{{form.password()}}</div>
+                <label>{{form.confirm.label}}</label>
+                <div>{{form.confirm()}}</div>
             </fieldset>
             <fieldset>
                 <legend>Terms of Service</legend>
                 <p>This app is a tool that pulls in data from 3rd party services. We do not screen any content manually and cannot guarantee appropriate or legitimate responses for all users.</p>
                 <p>As a user of this tool, I understand and will not hold the developer of this tool accountable for any damages that may result from inappropriate results or misinformation.</p>
-                <label><input type="checkbox" name="tos" required> I understand and agree to the Terms of Service</label>
+                <label>{{form.tos()}} {{form.tos.label}}</label>
             </fieldset>
-			<div><input type=submit value=Register></div>
+            <div><button type=submit>Register</button></div>
 		</form>
 
 		{% if error %}

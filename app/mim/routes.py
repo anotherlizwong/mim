@@ -17,7 +17,7 @@ bcrypt = Bcrypt(flask_app)
 csrf(flask_app)
 
 
-@flask_app.route('/home')
+@flask_app.route('/')
 def index():
     if 'token' in session:
         return redirect('/history')
@@ -85,7 +85,7 @@ def download():
     return redirect(doc_file.download_url)
 
 
-@flask_app.route('/login', methods=['GET', 'POST'])
+@flask_app.route('/login/', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
@@ -117,7 +117,7 @@ def logout():
     return redirect(url_for('/login'))
 
 
-@flask_app.route('/register', methods=["GET", "POST"])
+@flask_app.route('/register/', methods=["GET", "POST"])
 def register():
     try:
         form = RegistrationForm(request.form)
@@ -127,7 +127,7 @@ def register():
             password = bcrypt.hashpw(str(form.password.data), bcrypt.gensalt())
             name = form.name.data
             gender = form.gender.data
-            year_of_birth = util.get_year(form.age)
+            year_of_birth = util.get_year(form.age.data)
             tos_check_date = util.get_today()
 
             # check username for duplicate
@@ -152,12 +152,12 @@ def register():
                 session['username'] = email
                 session['this_user'] = name
 
-                return redirect(url_for('/login'))
+                return redirect(url_for('login'))
 
         return render_template("register.html", form=form)
 
     except Exception as e:
-        return (str(e))
+        return str(e)
 
 
 # can leave this in probably...
