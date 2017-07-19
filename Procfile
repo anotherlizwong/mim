@@ -1,1 +1,1 @@
-web: gunicorn --chdir app.runserver:application --workers 3 --log-file
+web: gunicorn --workers 3 --log-file app.runserver:application
