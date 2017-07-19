@@ -47,7 +47,7 @@ def format_results(doc):
 
 
 def example():
-    options = helpers.Options("Educational Technology", 25)
+    options = util.Options("Educational Technology", 25)
 
     try:
         print search(options)

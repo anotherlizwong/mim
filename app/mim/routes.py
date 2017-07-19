@@ -40,9 +40,7 @@ def index():
     if 'token' in session:
         return redirect('/history')
 
-    auth = mendeley_api.mendeley.start_authorization_code_flow()
-
-    rec = core.get_random()
+    rec = core.Content() # core.get_random()
     name = "friend"
 
     return render_template('index.html',
