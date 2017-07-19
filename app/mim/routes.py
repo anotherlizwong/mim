@@ -37,8 +37,6 @@ else:
 
 @flask_app.route('/')
 def index():
-    if 'token' in session:
-        return redirect('/history')
 
     rec = core.get_random()
     name = "friend"
@@ -47,11 +45,15 @@ def index():
                            rec=rec,
                            name=name)
 
+@flask_app.route('/record', methods=['GET', 'POST'])
+def record():
+    return redirect(url_for('index'))
+
 
 @flask_app.route('/history')
-def list_documents():
+def history():
     if 'token' not in session:
-        return redirect('/home')
+        return redirect(url_for('index'))
 
     mendeley_session = mendeley_api.get_session_from_cookies()
 
@@ -64,7 +66,7 @@ def list_documents():
 @flask_app.route('/document')
 def get_document():
     if 'token' not in session:
-        return redirect('/home')
+        return redirect(url_for('index'))
 
     mendeley_session = mendeley_api.get_session_from_cookies()
 
@@ -77,7 +79,7 @@ def get_document():
 @flask_app.route('/search')
 def metadata_lookup():
     if 'token' not in session:
-        return redirect('/home')
+        return redirect(url_for('index'))
 
     mendeley_session = mendeley_api.get_session_from_cookies()
 
@@ -90,7 +92,7 @@ def metadata_lookup():
 @flask_app.route('/download')
 def download():
     if 'token' not in session:
-        return redirect('/home')
+        return redirect(url_for('index'))
 
     mendeley_session = mendeley_api.get_session_from_cookies()
 
