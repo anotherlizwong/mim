@@ -132,7 +132,7 @@ def logout():
     session.pop('token', None)
     session.clear()
     flash("You have been logged out!")
-    return redirect(url_for('/login'))
+    return redirect(url_for('login'))
 
 
 @flask_app.route('/register', methods=["GET", "POST"])
