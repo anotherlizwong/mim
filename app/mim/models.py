@@ -4,8 +4,8 @@ from pymongo import MongoClient
 from mongoengine import *
 
 # client = MongoClient('localhost',27017)
-pw = os.environ("pw")
-database = os.environ("db")
+pw = os.environ["pw"]
+database = os.environ["db"]
 if pw:
     client = pymongo.MongoClient("mongodb://obgynbbq-admin:" +
                              pw +
