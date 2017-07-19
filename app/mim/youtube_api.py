@@ -50,6 +50,7 @@ def format_result(search_result):
              "date": search_result["snippet"]["publishedAt"],
              "url": VIDEO_URL + search_result["id"]["videoId"],
              "thumbnail": search_result["snippet"]["thumbnails"]["high"]
+             # "time": search_result["contentDetails"]["duration"]
              }
     return video
 
