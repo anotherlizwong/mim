@@ -1,1 +1,1 @@
-web: gunicorn --workers 3 --log-file app.runserver:application
+web: gunicorn app.runserver:application
