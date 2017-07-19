@@ -40,7 +40,7 @@ def index():
     if 'token' in session:
         return redirect('/history')
 
-    rec = core.Content() # core.get_random()
+    rec = core.get_random()
     name = "friend"
 
     return render_template('index.html',
