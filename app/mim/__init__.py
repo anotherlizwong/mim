@@ -1,6 +1,6 @@
+from flask import Flask
 from wtforms import Form, BooleanField, RadioField, StringField, PasswordField, validators, IntegerField, Field, \
     SubmitField
-from flask import Flask
 from wtforms.fields.html5 import EmailField
 
 # flask_app = Flask(__name__)

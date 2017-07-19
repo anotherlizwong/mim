@@ -4,4 +4,3 @@ Flask==0.12.2
 mendeley==0.3.2
 mongoengine==0.13.0
 WTForms==2.1
-gunicorn==19.7.1

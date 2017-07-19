@@ -1,4 +1,4 @@
-from app.mim.routes import flask_app
+from mim.routes import flask_app
 
 
 if __name__ == "__main__":

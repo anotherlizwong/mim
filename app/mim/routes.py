@@ -4,13 +4,13 @@ from flask import Flask, redirect, render_template, request, session, flash, url
 # from flask.ext.bcrypt import Bcrypt
 # from flask.ext.csrf import csrf
 
-from app.mim import RegistrationForm
 from models import *
 
 import core
 import mendeley_api
-import app.mim.helpers as util
-# from app.mim import flask_app
+import util
+from . import RegistrationForm
+# from mim import flask_app
 
 
 flask_app = Flask(__name__)

@@ -1,7 +1,7 @@
 import random
-from app.mim import Options
 import mendeley_api as mendeley
 import youtube_api as youtube
+from . import Options
 
 DESCRIPTION_LIMIT = 100
 MODULES = [youtube, mendeley]

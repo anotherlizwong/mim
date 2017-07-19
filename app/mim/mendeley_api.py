@@ -3,12 +3,12 @@ import os
 from mendeley import Mendeley
 from mendeley.session import MendeleySession
 
-import helpers
+import util
 
 if 'MENDELEY_ID' in os.environ:
     MENDELEY_APP_ID, MENDELEY_KEY = os.environ['MENDELEY_ID'], os.environ['MENDELEY_SECRET']
 else:
-    MENDELEY_APP_ID, MENDELEY_KEY = helpers.secretkey_config("mendeley")
+    MENDELEY_APP_ID, MENDELEY_KEY = util.secretkey_config("mendeley")
 REDIRECT_URI = 'http://localhost:5000/oauth'
 
 mendeley = Mendeley(MENDELEY_APP_ID, MENDELEY_KEY, REDIRECT_URI)
