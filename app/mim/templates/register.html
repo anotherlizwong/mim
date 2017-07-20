@@ -2,47 +2,59 @@
 
 
 {% block body %}
-
-	<div class="container">
-		<h3>Sign up!</h3>
-		<form method=post action="{{ url_for('register') }}">
+<h3>Sign up!</h3>
+<form method=post action="{{ url_for('register') }}">
+    <div class="row">
+        <div class="six columns">
             <fieldset>
                 <legend>Profile</legend>
                 <div>
-                    <label>{{ form.name.label }}</label>
+                    {{ form.name.label }}
                     {{ form.name() }}
                 </div>
                 <div>
-                    <label>{{ form.gender.label }}</label>
-                    {{ form.gender() }}
+                    {{ form.gender.label }}
+                    <div class="radios">
+                        {{ form.gender() }}
+                    </div>
                 </div>
                 <div>
-                    <label>{{ form.age.label }}</label>
+                    {{ form.age.label }}
                     {{ form.age() }}
                 </div>
             </fieldset>
+        </div>
+        <div class="six columns">
             <fieldset>
                 <legend>Account</legend>
-                <label>{{ form.email.label }}</label>
-                <div>{{ form.email() }}</div>
-                <label>{{ form.password.label }}</label>
-                <div>{{ form.password() }}</div>
-                <label>{{ form.confirm.label }}</label>
-                <div>{{ form.confirm() }}</div>
+                <div>
+                    {{ form.email.label }}
+                    {{ form.email() }}
+                </div>
+                <div>
+                    {{ form.password.label }}
+                    {{ form.password() }}
+                </div>
+                <div>
+                    {{ form.confirm.label }}
+                    {{ form.confirm() }}
+                </div>
             </fieldset>
-            <fieldset>
-                <legend>Terms of Service</legend>
-                <p>This app is a tool that pulls in data from 3rd party services. We do not screen any content manually and cannot guarantee appropriate or legitimate responses for all users.</p>
-                <p>As a user of this tool, I understand and will not hold the developer of this tool accountable for any damages that may result from inappropriate results or misinformation.</p>
-                <label>{{ form.tos() }} {{ form.tos.label }}</label>
-            </fieldset>
-            <div>{{ form.submit() }}</div>
-		</form>
+        </div>
+    </div>
+    <fieldset class="u-full-width">
+        <legend>Terms of Service</legend>
+        <p>This app is a tool that pulls in data from 3rd party services. We do not screen any content manually and
+            cannot guarantee appropriate or legitimate responses for all users.</p>
+        <p>As a user of this tool, I understand and will not hold the developer of this tool accountable for any damages
+            that may result from inappropriate results or misinformation.</p>
+        <label>{{ form.tos() }} <span class="label-body">{{ form.tos.label.text }}</span></label>
+    </fieldset>
+    <div>{{ form.submit() }}</div>
+</form>
 
-		{% if error %}
-			<p class="error"><strong>Error:</strong>{{ error }}</p>
-		{% endif %}
-
-	</div>
+{% if error %}
+<p class="error"><strong>Error:</strong>{{ error }}</p>
+{% endif %}
 
 {% endblock %}

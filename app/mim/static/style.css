@@ -72,3 +72,17 @@ legend {
 #thumbnail-container {
     padding: 1em;
 }
+
+.radios ul {
+    list-style: none;
+    margin-bottom: 0;
+}
+.radios li {
+    display: inline-block;
+}
+.radios label {
+    font-weight: normal;
+    display: inline-block;
+    margin: .25em;
+    margin-right: 1.5em;
+}

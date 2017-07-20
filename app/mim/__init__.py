@@ -20,7 +20,8 @@ class RegistrationForm(Form):
                         choices=[("male", "Male"),
                                  ("female", "Female"),
                                  ("other", "Other"),
-                                 ("unknown", "I'd rather not say")])
+                                 ("unknown", "I'd rather not say")],
+                        default="unknown")
     age = IntegerField('Age', [validators.Optional(),
                                validators.NumberRange(
                                    min=13, message="Must be at least 13 to use this application."
