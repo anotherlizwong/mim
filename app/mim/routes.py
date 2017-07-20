@@ -37,9 +37,11 @@ else:
 
 @flask_app.route('/')
 def index():
+    if 'token' not in session:
+        return redirect(url_for('login'))
 
     rec = core.get_random()
-    name = "friend"
+    name = session.get("name", "friend")
 
     return render_template('index.html',
                            rec=rec,
@@ -47,56 +49,69 @@ def index():
 
 @flask_app.route('/record', methods=['GET', 'POST'])
 def record():
+    try:
+        if request.method == "POST":
+            doc = {
+                "url": request.form["recommendation"].url,
+            }
+            opinion = {
+                "user": session["email"],
+                "opinion": util.get_opinion_value(request.form["opinion"]),
+                "rec_id": request.form[""]
+            }
+            user_history.add()
+
+    except:
+        flash("Something went wrong and we couldn't record your response.")
+
     return redirect(url_for('index'))
 
 
 @flask_app.route('/history')
 def history():
-    if 'token' not in session:
-        return redirect(url_for('index'))
+    if "token" not in session:
+        return redirect(url_for('login'))
 
-    mendeley_session = mendeley_api.get_session_from_cookies()
-
-    name = mendeley_session.profiles.me.display_name
-    docs = mendeley_session.documents.list(view='client').items
+    name = session.get("name", "friend")
+    docs = user_history.find({"user": session["email"]})
 
     return render_template('history.html', name=name, docs=docs)
 
 
-@flask_app.route('/document')
+@flask_app.route("/document")
 def get_document():
-    if 'token' not in session:
-        return redirect(url_for('index'))
+    if "token" not in session:
+        return redirect(url_for("login"))
 
     mendeley_session = mendeley_api.get_session_from_cookies()
 
-    document_id = request.args.get('document_id')
+    document_id = request.args.get("document_id")
     doc = mendeley_session.documents.get(document_id)
 
-    return render_template('metadata.html', doc=doc)
+    return render_template("metadata.html", doc=doc)
 
 
 @flask_app.route('/search')
 def metadata_lookup():
     if 'token' not in session:
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
 
     mendeley_session = mendeley_api.get_session_from_cookies()
 
     doi = request.args.get('doi')
     doc = mendeley_session.catalog.by_identifier(doi=doi)
 
-    return render_template('history.html', doc=doc)
+    return render_template("history.html", doc=doc)
 
 
-@flask_app.route('/download')
+@flask_app.route("/download")
 def download():
-    if 'token' not in session:
-        return redirect(url_for('index'))
+    if "token" not in session:
+        return redirect(url_for("login"))
 
     mendeley_session = mendeley_api.get_session_from_cookies()
 
-    document_id = request.args.get('document_id')
+    document_id = request.args.get("document_id")
     doc = mendeley_session.documents.get(document_id)
     doc_file = doc.files.list().items[0]
 
@@ -109,20 +124,21 @@ def login():
     if request.method == 'POST':
         try:
             # this_user = User.objects.get(email=request.form['username'])
-            this_user = users.find_one({'email': request.form['email']})
-            if request.form['email'] != this_user.email:
-                error = 'Invalid username'
+            this_user = users.find_one({"email": request.form["email"]})
+            if request.form["email"] != this_user["email"]:
+                error = "Invalid username."
             # elif bcrypt.check_password_hash(this_user.password, request.form['password']) is False:
             #     error = 'Invalid password'
             else:
-                session['logged_in'] = True
-                session['username'] = this_user.email
-                session['this_user'] = this_user.name
+                session["logged_in"] = True
+                session["token"] = util.generate_key()
+                session["email"] = this_user["email"]
+                session["name"] = this_user["name"]
 
-                flash('Logging in...')
+                flash("Logging in...")
                 return redirect(url_for('index'))
-        except:
-            flash('User does not exist')
+        except Exception as e:
+            flash(e.message + "That's not quite right. Try that username and password one more time?")
     return render_template('login.html', error=error)
 
 
@@ -130,6 +146,7 @@ def login():
 @flask_app.route('/logout')
 def logout():
     session.pop('token', None)
+    session["logged_in"] = False
     session.clear()
     flash("You have been logged out!")
     return redirect(url_for('login'))

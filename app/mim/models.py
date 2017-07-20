@@ -4,9 +4,9 @@ from pymongo import MongoClient
 from mongoengine import *
 
 # client = MongoClient('localhost',27017)
-pw = os.environ["pw"]
-database = os.environ["db"]
-if pw:
+if "pw" in os.environ:
+    pw = os.environ["pw"]
+    database = os.environ["db"]
     client = pymongo.MongoClient("mongodb://obgynbbq-admin:" +
                              pw +
                              "@mimcluster-shard-00-00-mba0j.mongodb.net:27017," +

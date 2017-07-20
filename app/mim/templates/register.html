@@ -1,6 +1,8 @@
+{% extends "base.html" %}
+
+
 {% block body %}
 
-<body>
 	<div class="container">
 		<h3>Sign up!</h3>
 		<form method=post action="{{ url_for('register') }}">
@@ -40,6 +42,5 @@
 		{% endif %}
 
 	</div>
-</body>
 
 {% endblock %}

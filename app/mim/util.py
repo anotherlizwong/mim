@@ -1,5 +1,7 @@
+import binascii
 import json
 import datetime
+import os
 
 def secretkey_config(api):
     json_data = open("client_secrets.json").read()
@@ -23,3 +25,17 @@ def get_age(year):
 
 def get_today():
     return datetime.datetime.now()
+
+
+def generate_key():
+    return binascii.hexlify(os.urandom(20)).decode()
+
+
+def get_opinion_value(opinion):
+    if opinion is "None":
+        return 0
+    elif opinion:
+        return 1
+    else:
+        return -1
+
