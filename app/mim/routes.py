@@ -141,7 +141,7 @@ def login():
                 session["email"] = this_user["email"]
                 session["name"] = this_user["name"]
 
-                flash("Logging in...")
+                flash("Logged in!")
                 return redirect(url_for('index'))
         except Exception as e:
             flash(e.message + "That's not quite right. Try that username and password one more time?")
