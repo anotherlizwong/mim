@@ -190,10 +190,11 @@ def register():
                 flash("Thanks for registering!")
 
                 session['logged_in'] = True
+                session["token"] = util.generate_key()
                 session['username'] = email
                 session['this_user'] = name
 
-                return redirect(url_for('login'))
+                return redirect(url_for('index'))
 
         return render_template("register.html", form=form)
 

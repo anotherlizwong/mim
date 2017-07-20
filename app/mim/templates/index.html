@@ -16,7 +16,7 @@
                 </div>
                 <div id="thumbnail-container">
                     <a href="{{ rec.url }}" target="_blank">
-                        <img id="thumbnail" src="{{ rec.thumbnail_url }}" height="{{ rec.thumbnail_height }}"
+                        <img class="u-max-full-width" id="thumbnail" src="{{ rec.thumbnail_url }}" height="{{ rec.thumbnail_height }}"
                              width="{{ rec.thumbnail_width }}">
                     </a>
                 </div>
@@ -37,7 +37,7 @@
     <div class="row">
         <div id="reroll-container" class="seven columns">
             <button type="submit" name="opinion" value="None" class="u-full-width {{ classes.next }}"
-                    onClick="window.location.reload()"><i class="die"></i> Give me another!
+                    onClick="window.location.reload()"><i class="fa fa-lg fa-random"></i> Give me another!
             </button>
         </div>
     </div>
