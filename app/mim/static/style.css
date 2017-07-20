@@ -1,9 +1,16 @@
 #main-content.container {
     max-width: 1020px;
 }
+#main-content {
+    padding-top: 2em;
+}
+
+body.mim {
+    color: #666
+}
 
 .metanav {
-    background-color: #c2a8f7;
+    background-color: #666;
     color: white;
     height: 4em;
     padding: .75em;
@@ -14,12 +21,15 @@
     background-color: white;
     color: black;
 }
-.metanav .button a:hover {
+.metanav .button:hover {
     background-color: lightgrey;
     color: black;
 }
 .metanav .button.button-primary {
     background-color: #33C3F0;
+}
+.metanav .button.button-primary:hover {
+    background-color: #1EAEDB;
 }
 
 .flash {
@@ -27,7 +37,38 @@
     -webkit-animation: fade-out .5s;
 }
 
+.button, button {
+    background-color: white;
+}
+
 legend {
     font-size: 1.5em;
     border-bottom: 1px solid black;
+}
+
+#description-container p {
+    padding-top: .5em;
+    text-indent: 10px;
+    line-height: 1.5em;
+}
+
+#description-container p::first-letter {
+    font-weight: bold;
+    font-size: 2em;
+    font-family: "Monotype Corsiva", "Apple Chancery", "URW Chancery L", cursive
+}
+
+#button-container {
+    margin-bottom: -1.5em;
+}
+
+#recommendation-container {
+    border: #ddd 1px solid;
+    border-radius: 4px;
+    padding: 1em 2em 0;
+    margin-bottom: 3em;
+}
+
+#thumbnail-container {
+    padding: 1em;
 }

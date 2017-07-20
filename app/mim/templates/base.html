@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='imgs/favicon.ico') }}">
 </head>
-<body>
+<body class="mim">
 
 
 <div class="metanav u-full-width">
@@ -22,8 +22,8 @@
         |
         <a class="button" href="{{ url_for('login') }}">Log In</a>
     {% else %}
-        <a href="{{ url_for('index') }}">Home</a> |
-        Logged in as {{ session["name"] }} - <a href="{{ url_for('logout') }}">Log Out</a>
+        <a class="button" href="{{ url_for('index') }}">Home</a> |
+        <a class="button" href="{{ url_for('logout') }}">{{ session["name"] }}, Log Out</a>
     {% endif %}
     </div>
 </div>
