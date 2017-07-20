@@ -14,7 +14,7 @@ class RegistrationForm(Form):
     password = PasswordField('Password', [validators.DataRequired(),
                                           validators.EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Confirm Password')
-    name = StringField('name', [validators.Length(min=1, max=100),
+    name = StringField('Name', [validators.Length(min=1, max=100),
                                 validators.DataRequired()])
     gender = RadioField('Gender', [validators.DataRequired()],
                         choices=[("male", "Male"),
@@ -24,7 +24,8 @@ class RegistrationForm(Form):
     age = IntegerField('Age', [validators.Optional(),
                                validators.NumberRange(
                                    min=13, message="Must be at least 13 to use this application."
-                               )])
+                               )],
+                        render_kw={"placeholder": "(optional)"})
     tos = BooleanField(' I understand and agree to the Terms of Service', [validators.DataRequired()])
     submit = SubmitField("Register")
 

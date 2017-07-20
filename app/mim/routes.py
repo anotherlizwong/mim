@@ -42,10 +42,16 @@ def index():
 
     rec = core.get_random()
     name = session.get("name", "friend")
+    classes = {
+        "interesting": "button-primary",
+        "uninteresting": "",
+        "next": ""
+    }
 
     return render_template('index.html',
                            rec=rec,
-                           name=name)
+                           name=name,
+                           classes=classes)
 
 @flask_app.route('/record', methods=['GET', 'POST'])
 def record():

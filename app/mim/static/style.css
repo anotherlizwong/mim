@@ -1,0 +1,33 @@
+#main-content.container {
+    max-width: 1020px;
+}
+
+.metanav {
+    background-color: #c2a8f7;
+    color: white;
+    height: 4em;
+    padding: .75em;
+    padding-right: 2em;
+}
+
+.metanav .button {
+    background-color: white;
+    color: black;
+}
+.metanav .button a:hover {
+    background-color: lightgrey;
+    color: black;
+}
+.metanav .button.button-primary {
+    background-color: #33C3F0;
+}
+
+.flash {
+    -webkit-animation-delay: 10s;
+    -webkit-animation: fade-out .5s;
+}
+
+legend {
+    font-size: 1.5em;
+    border-bottom: 1px solid black;
+}

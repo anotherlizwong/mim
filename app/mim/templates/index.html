@@ -2,34 +2,55 @@
 
 {% block body %}
 
-    <form action="/record" method="post">
-        <div id="recommendation-container">
+<form action="/record" method="post">
+    <div class="row">
+        <div id="recommendation-container" class="seven columns">
             <h2>Hey {{ name }},</h2>
             <p>I thought you might be interested in this
-                <a href="{{ rec.url }}" target="_blank"><span id="content-type">{{ rec.content_type }}</span></a> I found...</p>
+                <a href="{{ rec.url }}" target="_blank"><span id="content-type">{{ rec.content_type }}</span></a> I
+                found...</p>
             <div id="content-container">
                 <input type="hidden" value={{ rec }} name="recommendation">
                 <div>
                     <h3><a href="{{ rec.url }}" target="_blank"> <span id="title">{{ rec.title }}</span></a></h3>
-
                 </div>
                 <div id="thumbnail-container">
+                    {% if rec.content_type == "video" %}
+                    <iframe id="ytplayer" type="text/html" width="640" height="360"
+                          src="https://www.youtube.com/embed/"+{{ rec.id }}
+                          frameborder="0">
+                    </iframe>
+                    {% else %}
                     <a href="{{ rec.url }}" target="_blank">
-                        <img id="thumbnail" src="{{ rec.thumbnail_url }}" height="{{ rec.thumbnail_height }}" width="{{ rec.thumbnail_width }}">
+                        <img id="thumbnail" src="{{ rec.thumbnail_url }}" height="{{ rec.thumbnail_height }}"
+                             width="{{ rec.thumbnail_width }}">
                     </a>
+                    {% endif %}
                 </div>
                 <div id="description-container">
                     <p>{{ rec.description }}</p>
                 </div>
                 <div id="button-container">
-                    <button type="submit" name="opinion" value=0><i class="thumbs-down"></i> Ehh... Not great</button>
-                    <button type="submit" name="opinion" value=1><i class="thumbs-up"></i> That was interesting!</button>
+                    <button type="submit" name="opinion" value=0 class="{{ classes.uninteresting }}"><i
+                            class="fa fa-thumbs-down"></i> Ehh... Not great
+                    </button>
+                    <button type="submit" name="opinion" value=1 class="{{ classes.interesting }}"><i
+                            class="fa fa-thumbs-up"></i> That was interesting!
+                    </button>
                 </div>
             </div>
         </div>
-        <div id="reroll-container">
-            <button type="submit" name="opinion" value="None" onClick="window.location.reload()"><i class="die"></i> Give me another!</button>
+        <div class="five columns">
+
         </div>
-    </form>
+    </div>
+    <div class="row">
+        <div id="reroll-container" class="twelve columns">
+            <button type="submit" name="opinion" value="None" class="{{ classes.next }}"
+                    onClick="window.location.reload()"><i class="die"></i> Give me another!
+            </button>
+        </div>
+    </div>
+</form>
 
 {% endblock %}

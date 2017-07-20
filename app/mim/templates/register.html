@@ -8,15 +8,17 @@
 		<form method=post action="{{ url_for('register') }}">
             <fieldset>
                 <legend>Profile</legend>
-                <label>{{ form.name.label }}</label>
-                <div>{{ form.name() }}</div>
-                <label>{{ form.gender.label }}</label>
                 <div>
+                    <label>{{ form.name.label }}</label>
+                    {{ form.name() }}
+                </div>
+                <div>
+                    <label>{{ form.gender.label }}</label>
                     {{ form.gender() }}
                 </div>
-                <label>{{ form.age.label }}</label>
                 <div>
-                    {{ form.age() }} (optional)
+                    <label>{{ form.age.label }}</label>
+                    {{ form.age() }}
                 </div>
             </fieldset>
             <fieldset>

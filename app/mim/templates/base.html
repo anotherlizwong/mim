@@ -3,26 +3,36 @@
 <html>
 <head>
     <title>Recommendation Engine</title>
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='normalize.css') }}">
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='skeleton.css') }}">
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='normalize.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='skeleton.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='imgs/favicon.ico') }}">
 </head>
 <body>
 
-{% for message in get_flashed_messages() %}
-<div class="flash">{{ message }}</div>
-{% endfor %}
 
-<div class="metanav">
-    <a href="{{ url_for('index') }}">Home</a> |
+<div class="metanav u-full-width">
+    <div class="u-pull-left">
+        <h1>Recommendation Engine</h1>
+    </div>
+    <div class="u-pull-right">
     {% if not session.logged_in %}
-        <a href="{{ url_for('login') }}">log in</a>
+        <a class="button button-primary" href="{{ url_for('register') }}">Register New User</a>
+        |
+        <a class="button" href="{{ url_for('login') }}">Log In</a>
     {% else %}
+        <a href="{{ url_for('index') }}">Home</a> |
         Logged in as {{ session["name"] }} - <a href="{{ url_for('logout') }}">Log Out</a>
     {% endif %}
+    </div>
 </div>
 
-<div id="main_content">
+<div id="main-content" class="container">
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+
     {% block body %}{% endblock %}
 </div>
 
