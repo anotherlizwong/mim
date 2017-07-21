@@ -76,7 +76,7 @@ def record():
                 flash(e.message)
 
             flash("Thanks for your feedback!", "opinion")
-            if os.environ.has_key("tokens"):
+            if "tokens" in os.environ:
                 token_no = random.randint(1,8)
                 flash(os.environ["token"+str(token_no)],"token")
 
