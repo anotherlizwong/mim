@@ -77,12 +77,12 @@ def record():
 
             flash("Thanks for your feedback!", "opinion")
 
-            try:
-                if "tokens" in os.environ:
-                    token_no = random.randint(1,8)
-                    flash(os.environ["token"+str(token_no)],"token")
-            except Exception, e:
-                print e.message
+            # try:
+            #     if "tokens" in os.environ:
+            #         token_no = str(random.randint(1,8))
+            #         flash(os.environ["token"+token_no],"token")
+            # except Exception, e:
+            #     print e.message
 
     except:
         flash("Something went wrong and we couldn't record your response.", "error")
