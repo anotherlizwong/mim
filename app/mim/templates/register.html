@@ -1,56 +1,59 @@
 {% extends "base.html" %}
 
-
 {% block body %}
-<h3>Sign up!</h3>
 <form method=post action="{{ url_for('register') }}">
-    <div class="row">
-        <div class="six columns">
-            <fieldset>
-                <legend>Profile</legend>
-                <div>
-                    {{ form.name.label }}
-                    {{ form.name() }}
-                </div>
-                <div>
-                    {{ form.gender.label }}
-                    <div class="radios">
-                        {{ form.gender() }}
+    <div id="main-content" class="container">
+
+        <h2>Sign up!</h2>
+        <div class="row">
+            <div class="one-half column">
+                <fieldset>
+                    <legend>Profile</legend>
+                    <div>
+                        {{ form.name.label }}
+                        {{ form.name() }}
                     </div>
-                </div>
-                <div>
-                    {{ form.age.label }}
-                    {{ form.age() }}
-                </div>
-            </fieldset>
+                    <div>
+                        {{ form.gender.label }}
+                        <div class="radios">
+                            {{ form.gender() }}
+                        </div>
+                    </div>
+                    <div>
+                        {{ form.age.label }}
+                        {{ form.age() }}
+                    </div>
+                </fieldset>
+            </div>
+            <div class="one-half column">
+                <fieldset>
+                    <legend>Account</legend>
+                    <div>
+                        {{ form.email.label }}
+                        {{ form.email() }}
+                    </div>
+                    <div>
+                        {{ form.password.label }}
+                        {{ form.password() }}
+                    </div>
+                    <div>
+                        {{ form.confirm.label }}
+                        {{ form.confirm() }}
+                    </div>
+                </fieldset>
+            </div>
         </div>
-        <div class="six columns">
-            <fieldset>
-                <legend>Account</legend>
-                <div>
-                    {{ form.email.label }}
-                    {{ form.email() }}
-                </div>
-                <div>
-                    {{ form.password.label }}
-                    {{ form.password() }}
-                </div>
-                <div>
-                    {{ form.confirm.label }}
-                    {{ form.confirm() }}
-                </div>
-            </fieldset>
-        </div>
+        <fieldset class="u-full-width">
+            <legend>Terms of Service</legend>
+            <p>This app is a tool that pulls in data from 3rd party services. We do not screen any content manually and
+                cannot guarantee appropriate or legitimate responses for all users.</p>
+            <p>As a user of this tool, I understand and will not hold the developer of this tool accountable for any
+                damages
+                that may result from inappropriate results or misinformation.</p>
+            <label>{{ form.tos() }} <span class="label-body">{{ form.tos.label.text }}</span></label>
+        </fieldset>
+        <div>{{ form.submit() }}</div>
     </div>
-    <fieldset class="u-full-width">
-        <legend>Terms of Service</legend>
-        <p>This app is a tool that pulls in data from 3rd party services. We do not screen any content manually and
-            cannot guarantee appropriate or legitimate responses for all users.</p>
-        <p>As a user of this tool, I understand and will not hold the developer of this tool accountable for any damages
-            that may result from inappropriate results or misinformation.</p>
-        <label>{{ form.tos() }} <span class="label-body">{{ form.tos.label.text }}</span></label>
-    </fieldset>
-    <div>{{ form.submit() }}</div>
 </form>
 
 {% if error %}
