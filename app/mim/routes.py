@@ -1,8 +1,8 @@
 import os
 
 from flask import Flask, redirect, render_template, request, session, flash, url_for
-from flask.ext.bcrypt import Bcrypt
-from flask.ext.csrf import csrf
+from flask_bcrypt import Bcrypt
+# from flask.ext.csrf import csrf
 from pymongo.errors import DuplicateKeyError
 
 from models import *
