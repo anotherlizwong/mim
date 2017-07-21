@@ -203,7 +203,7 @@ def register():
             session['logged_in'] = True
             session["token"] = util.generate_key()
             session['username'] = email
-            session['this_user'] = name
+            session['name'] = name
 
             return redirect(url_for('index'))
 
