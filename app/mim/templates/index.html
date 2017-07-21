@@ -57,6 +57,15 @@
             -->
         </div>
         <div class="row">
+            {% with tokens = get_flashed_messages(category_filter=["token"]) %}
+                {% if tokens %}
+                    {%- for token in tokens %}
+                        <div class="two-thirds columns flash">Random Token: {{ token }}</div>
+                    {% endfor -%}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="row">
             <div id="reroll-container" class="two-thirds columns">
                 <button type="submit" name="opinion" value="None" class="u-full-width {{ classes.next }}">
                     <i class="fa fa-lg fa-random" aria-hidden="true"></i>

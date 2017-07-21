@@ -34,7 +34,8 @@ body.mim {
 
 .flash {
     font-size: 2em;
-
+}
+.fade {
     animation: fade-animation 0.5s 1;
     -webkit-animation: fade-animation 0.5s 1;
     animation-fill-mode: forwards;

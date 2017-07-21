@@ -1,5 +1,5 @@
 import os
-
+import random
 from flask import Flask, redirect, render_template, request, session, flash, url_for
 from flask_bcrypt import Bcrypt
 # from flask.ext.csrf import csrf
@@ -76,6 +76,9 @@ def record():
                 flash(e.message)
 
             flash("Thanks for your feedback!", "opinion")
+            if os.environ.has_key("tokens"):
+                token_no = random.randint(1,8)
+                flash(os.environ.get("token"+str(token_no)),"token")
 
     except:
         flash("Something went wrong and we couldn't record your response.", "error")
