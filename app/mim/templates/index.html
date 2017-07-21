@@ -7,10 +7,14 @@
 
         <div class="row">
             <div id="recommendation-container" class="two-thirds columns">
-                <h2>Hey <span class="name">{{ name }}</span>,</h2>
-                <p>I thought you might be interested in this
-                    <a href="{{ rec.url }}" target="_blank"><span id="content-type">{{ rec.content_type }}</span></a> I
-                    found...</p>
+                <div class="snug">
+                    <h2>Hey <span class="name">{{ name }}</span>,</h2>
+                    <p>I thought you might be interested in this
+                        <a href="{{ rec.url }}" target="_blank"><span
+                                id="content-type">{{ rec.content_type }}</span></a>
+                        on "Educational Technology" I found...
+                    </p>
+                </div>
                 <div id="content-container">
                     <input type="hidden" value="{{ rec.url }}" name="url">
                     <input type="hidden" value="{{ rec.content_type }}" name="type">
@@ -24,13 +28,14 @@
                         <i class="fa fa-5x fa-book fa-pull-left fa-border" aria-hidden="true"></i>
                     </a>
                     {% else %}
-                        <div id="thumbnail-container">
-                            <a href="{{ rec.url }}" target="_blank">
-                                <img class="u-max-full-width" id="thumbnail" src="{{ rec.thumbnail_url }}"
-                                     height="{{ rec.thumbnail_height }}"
-                                     width="{{ rec.thumbnail_width }}">
-                            </a>
-                        </div>
+                    <div id="thumbnail-container">
+                        <a href="{{ rec.url }}" target="_blank">
+                            <img class="u-max-full-width" id="thumbnail" src="{{ rec.thumbnail_url }}"
+                                 height="{{ rec.thumbnail_height }}"
+                                 width="{{ rec.thumbnail_width }}">
+                            <i class="fa fa-5x fa-play-circle" id="video-play-icon" aria-hidden="true"></i>
+                        </a>
+                    </div>
                     {% endif %}
                     <div id="description-container">
                         <p>{{ rec.description }}</p>
@@ -53,8 +58,9 @@
         </div>
         <div class="row">
             <div id="reroll-container" class="two-thirds columns">
-                <button type="submit" name="opinion" value="None" class="u-full-width {{ classes.next }}"
-                        onClick="window.location.reload()"><i class="fa fa-lg fa-random" aria-hidden="true"></i> Give me another!
+                <button type="submit" name="opinion" value="None" class="u-full-width {{ classes.next }}">
+                    <i class="fa fa-lg fa-random" aria-hidden="true"></i>
+                    Give me another!
                 </button>
             </div>
         </div>

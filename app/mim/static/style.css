@@ -105,3 +105,17 @@ legend {
 .error {
     color: red;
 }
+
+.snug h2 {
+    margin-bottom: 1rem;
+    font-size: 3rem;
+}
+.snug p {
+    margin-bottom: 1rem;
+}
+
+#video-play-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
