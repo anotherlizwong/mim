@@ -78,7 +78,7 @@ def record():
             flash("Thanks for your feedback!", "opinion")
             if os.environ.has_key("tokens"):
                 token_no = random.randint(1,8)
-                flash(os.environ.get("token"+str(token_no)),"token")
+                flash(os.environ["token"+str(token_no)],"token")
 
     except:
         flash("Something went wrong and we couldn't record your response.", "error")
