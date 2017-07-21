@@ -32,6 +32,7 @@ class Content():
         self.description = description
 
     def build(self, from_engine):
+        self.id = from_engine["id"]
         self.content_type = from_engine["content_type"]
         self.title = from_engine["title"]
         if "name" in self.author:
@@ -44,6 +45,10 @@ class Content():
             self.thumbnail_url = from_engine["thumbnail"]["url"]
             self.thumbnail_height = from_engine["thumbnail"]["height"]
             self.thumbnail_width = from_engine["thumbnail"]["width"]
+
+    def set_id(self, id):
+        self.id = id
+
 
 def get_random():
     engine = MODULES[random.randint(0,len(MODULES)-1)]

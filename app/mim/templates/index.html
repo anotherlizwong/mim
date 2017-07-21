@@ -7,43 +7,54 @@
 
         <div class="row">
             <div id="recommendation-container" class="two-thirds columns">
-                <h2>Hey {{ name }},</h2>
+                <h2>Hey <span class="name">{{ name }}</span>,</h2>
                 <p>I thought you might be interested in this
                     <a href="{{ rec.url }}" target="_blank"><span id="content-type">{{ rec.content_type }}</span></a> I
                     found...</p>
                 <div id="content-container">
-                    <input type="hidden" value={{ rec }} name="recommendation">
+                    <input type="hidden" value="{{ rec.url }}" name="url">
+                    <input type="hidden" value="{{ rec.content_type }}" name="type">
+                    <input type="hidden" value="{{ rec.id }}" name="id">
+                    <input type="hidden" value="{{ rec.title }}" name="title">
                     <div>
                         <h3><a href="{{ rec.url }}" target="_blank"> <span id="title">{{ rec.title }}</span></a></h3>
                     </div>
-                    <div id="thumbnail-container">
-                        <a href="{{ rec.url }}" target="_blank">
-                            <img class="u-max-full-width" id="thumbnail" src="{{ rec.thumbnail_url }}"
-                                 height="{{ rec.thumbnail_height }}"
-                                 width="{{ rec.thumbnail_width }}">
-                        </a>
-                    </div>
+                    {% if rec.content_type == "paper" %}
+                    <a href="{{ rec.url }}" target="_blank">
+                        <i class="fa fa-5x fa-book fa-pull-left fa-border" aria-hidden="true"></i>
+                    </a>
+                    {% else %}
+                        <div id="thumbnail-container">
+                            <a href="{{ rec.url }}" target="_blank">
+                                <img class="u-max-full-width" id="thumbnail" src="{{ rec.thumbnail_url }}"
+                                     height="{{ rec.thumbnail_height }}"
+                                     width="{{ rec.thumbnail_width }}">
+                            </a>
+                        </div>
+                    {% endif %}
                     <div id="description-container">
                         <p>{{ rec.description }}</p>
                     </div>
                     <div id="button-container">
                         <button type="submit" name="opinion" value=0 class="{{ classes.uninteresting }}"><i
-                                class="fa fa-lg fa-thumbs-down"></i> Ehh... Not great
+                                class="fa fa-lg fa-thumbs-down" aria-hidden="true"></i> Ehh... Not great
                         </button>
                         <button type="submit" name="opinion" value=1 class="u-pull-right {{ classes.interesting }}"><i
-                                class="fa fa-lg fa-thumbs-up"></i> That was interesting!
+                                class="fa fa-lg fa-thumbs-up" aria-hidden="true"></i> That was interesting!
                         </button>
                     </div>
                 </div>
             </div>
+            <!--
             <div class="one-third column">
-                <textarea cols="30"></textarea>
+                <textarea cols="200"></textarea>
             </div>
+            -->
         </div>
         <div class="row">
-            <div id="reroll-container" class="seven columns">
+            <div id="reroll-container" class="two-thirds columns">
                 <button type="submit" name="opinion" value="None" class="u-full-width {{ classes.next }}"
-                        onClick="window.location.reload()"><i class="fa fa-lg fa-random"></i> Give me another!
+                        onClick="window.location.reload()"><i class="fa fa-lg fa-random" aria-hidden="true"></i> Give me another!
                 </button>
             </div>
         </div>

@@ -39,8 +39,8 @@ body.mim {
     -webkit-animation: fade-animation 0.5s 1;
     animation-fill-mode: forwards;
 
-    animation-delay: 2s;
-    -webkit-animation-delay: 1s; /* Safari and Chrome */
+    animation-delay: 5s;
+    -webkit-animation-delay: 5s; /* Safari and Chrome */
     -webkit-animation-fill-mode: forwards;
 }@keyframes fade-animation{
     from {opacity :1;}
@@ -49,6 +49,9 @@ body.mim {
     from {opacity :1;}
     to {opacity :0;}
 }
+ .flash+form>#main-content {
+     padding-top: 0;
+ }
 
 .button, button {
     background-color: white;
@@ -64,10 +67,10 @@ legend {
     text-indent: 10px;
     line-height: 1.5em;
 }
-
 #description-container p::first-letter {
     font-weight: bold;
-    font-size: 2em;
+    font-size: 3em;
+    padding-right: 3px;
     font-family: "Monotype Corsiva", "Apple Chancery", "URW Chancery L", cursive
 }
 
@@ -97,4 +100,8 @@ legend {
 }
 .button i, button i {
     margin: 0 .5em;
+}
+
+.error {
+    color: red;
 }

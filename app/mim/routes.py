@@ -1,8 +1,9 @@
 import os
 
 from flask import Flask, redirect, render_template, request, session, flash, url_for
-# from flask.ext.bcrypt import Bcrypt
-# from flask.ext.csrf import csrf
+from flask.ext.bcrypt import Bcrypt
+from flask.ext.csrf import csrf
+from pymongo.errors import DuplicateKeyError
 
 from models import *
 
@@ -19,7 +20,7 @@ if 'SECRET_KEY' in os.environ:
 else:
     flask_app.secret_key = "LOCAL"
 
-# bcrypt = Bcrypt(flask_app)
+bcrypt = Bcrypt(flask_app)
 # csrf(flask_app)
 
 
@@ -58,17 +59,26 @@ def record():
     try:
         if request.method == "POST":
             doc = {
-                "url": request.form["recommendation"].url,
+                "id": request.form["id"],
+                "url": request.form["url"],
+                "content_type": request.form["type"],
+                "title": request.form["title"],
             }
             opinion = {
                 "user": session["email"],
                 "opinion": util.get_opinion_value(request.form["opinion"]),
-                "rec_id": request.form[""]
+                "rec_id": request.form["id"]
             }
-            user_history.add()
+            try:
+                user_history.insert({"content": doc,
+                                     "opinion": opinion})
+            except Exception, e:
+                flash(e.message)
+
+            flash("Thanks for your feedback!", "opinion")
 
     except:
-        flash("Something went wrong and we couldn't record your response.")
+        flash("Something went wrong and we couldn't record your response.", "error")
 
     return redirect(url_for('index'))
 
@@ -133,8 +143,8 @@ def login():
             this_user = users.find_one({"email": request.form["email"]})
             if request.form["email"] != this_user["email"]:
                 error = "Invalid username."
-            # elif bcrypt.check_password_hash(this_user.password, request.form['password']) is False:
-            #     error = 'Invalid password'
+            elif bcrypt.check_password_hash(this_user["password"], request.form['password']) is False:
+                error = 'Invalid password'
             else:
                 session["logged_in"] = True
                 session["token"] = util.generate_key()
@@ -144,7 +154,7 @@ def login():
                 flash("Logged in!")
                 return redirect(url_for('index'))
         except Exception as e:
-            flash(e.message + "That's not quite right. Try that username and password one more time?")
+            flash("That's not quite right. Try that username and password one more time?", "error")
     return render_template('login.html', error=error)
 
 
@@ -165,41 +175,43 @@ def register():
 
         if request.method == "POST" and form.validate():
             email = form.email.data
-            # password = bcrypt.hashpw(str(form.password.data), bcrypt.gensalt())
-            name = form.name.data
+            password = bcrypt.generate_password_hash(str(form.password.data), 10)
+            name = form.name.data.capitalize()
             gender = form.gender.data
             year_of_birth = util.get_year(form.age.data)
             tos_check_date = util.get_today()
 
             # check username for duplicate
-            result = users.insert_one(
-                {
-                    "email":    email,
-                    # "password": password,
-                    "name":     name,
-                    "gender":   gender,
-                    "yob":      year_of_birth,
-                    "tos":      tos_check_date
-                }
-            )
-            if result.acknowledged is False:
-                flash("That username is already taken, please choose another")
+            try:
+                result = users.insert_one(
+                    {
+                        "email":    email,
+                        "password": password,
+                        "name":     name,
+                        "gender":   gender,
+                        "yob":      year_of_birth,
+                        "tos":      tos_check_date
+                    }
+                )
+            except DuplicateKeyError, e:
+                flash("That username is already taken, please choose another.", "error")
                 return render_template('register.html', form=form)
 
-            else:
-                flash("Thanks for registering!")
+            # No exception is good...
+            flash("Thanks for registering!")
 
-                session['logged_in'] = True
-                session["token"] = util.generate_key()
-                session['username'] = email
-                session['this_user'] = name
+            session['logged_in'] = True
+            session["token"] = util.generate_key()
+            session['username'] = email
+            session['this_user'] = name
 
-                return redirect(url_for('index'))
+            return redirect(url_for('index'))
 
         return render_template("register.html", form=form)
 
     except Exception as e:
-        return str(e)
+        flash(e.message, "error")
+        return render_template('register.html', form=form)
 
 
 # can leave this in probably...
