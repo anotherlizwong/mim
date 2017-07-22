@@ -114,13 +114,24 @@ legend {
 .snug p {
     margin-bottom: 1rem;
 }
-
+/* video icon positioning - https://stackoverflow.com/a/37070206 */
+#video-thumbnail-link {
+    position: relative;
+    display: inline-block;
+}
 #video-play-icon {
     position: absolute;
-    left: 230px;
-    top: 45%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
+/* end video icon positioning */
 
 .keep-whitespace {
     white-space: pre-line;
+}
+
+.duration {
+    font-size: .75em;
+    color: #AAAAAA;
 }

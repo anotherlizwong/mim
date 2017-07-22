@@ -30,7 +30,11 @@
 </div>
 
     {% for message in get_flashed_messages() %}
-        <div class="flash fade">{{ message }}</div>
+        <div class="container flash fade">
+            <div class="row">
+                <div class="two-thirds columns">{{ message }}</div>
+            </div>
+        </div>
     {% endfor %}
 
     {% block body %}{% endblock %}

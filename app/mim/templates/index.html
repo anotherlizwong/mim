@@ -35,7 +35,7 @@
                     </a>
                     {% else %}
                     <div id="thumbnail-container">
-                        <a href="{{ rec.url }}" target="_blank">
+                        <a id="video-thumbnail-link" href="{{ rec.url }}" target="_blank">
                             <img class="u-max-full-width" id="thumbnail" src="{{ rec.thumbnail_url }}"
                                  height="{{ rec.thumbnail_height }}"
                                  width="{{ rec.thumbnail_width }}">
