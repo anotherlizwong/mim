@@ -52,10 +52,8 @@ class Content():
 
 def get_random(keyword):
     engine = MODULES[random.randint(0,len(MODULES)-1)]
-    search_results = engine.search(Options(keyword, 50))
-    recommendation = search_results[random.randint(0,len(search_results)-1)]
     selection = Content()
-    selection.build(recommendation)
+    selection.build(engine.get_one(Options(keyword, 50)))
     return selection
 
 

@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os
+import random
 
 from apiclient.discovery import build
 from apiclient.errors import HttpError
@@ -17,6 +18,12 @@ CHANNEL_URL = "https://youtube.com/channel/"
 
 youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
                 developerKey=DEVELOPER_KEY)
+
+def get_one(options):
+    videos = search(options) # TODO - Should store these videos fully to use the API less
+    single_video = videos[random.randint(0, len(videos)-1)]
+    single_video["description"] = get_full_description(single_video["id"])
+    return single_video
 
 
 def search(options):
@@ -53,6 +60,11 @@ def format_result(search_result):
              # "time": search_result["contentDetails"]["duration"]
              }
     return video
+
+
+def get_full_description(video_id):
+    entry = youtube.videos().list(part='snippet', id=video_id).execute()
+    return entry["items"][0]["snippet"]["description"]
 
 
 def example():

@@ -4,6 +4,7 @@ from mendeley import Mendeley
 from mendeley.session import MendeleySession
 
 import util
+import random
 
 if 'MENDELEY_ID' in os.environ:
     MENDELEY_APP_ID, MENDELEY_KEY = os.environ['MENDELEY_ID'], os.environ['MENDELEY_SECRET']
@@ -17,6 +18,12 @@ session = mendeley.start_client_credentials_flow().authenticate()
 
 def get_session_from_cookies():
     return MendeleySession(mendeley, session['token'])
+
+
+def get_one(options):
+    documents = search(options)
+    one_document = documents[random.randint(0, len(documents)-1)]
+    return one_document
 
 
 def search(options):
