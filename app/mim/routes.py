@@ -60,7 +60,8 @@ def record():
             except Exception, e:
                 flash(e.message)
 
-            flash("Thanks for your feedback!", "opinion")
+            if opinion["opinion"] is not 0:
+                flash("Thanks for your feedback!", "feedback")
 
             try:
                 if "tokens" in os.environ:

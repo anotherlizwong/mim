@@ -28,6 +28,7 @@
                             </a>
                         </h3>
                     </div>
+
                     {% if rec.content_type == "paper" %}
                     <p class="author">Published By - {{ rec.author }}</p>
                     <a href="{{ rec.url }}" target="_blank">
@@ -47,6 +48,15 @@
                     <div id="description-container">
                         <p class="keep-whitespace">{{ rec.description }}</p>
                     </div>
+                    {% with feedback = get_flashed_messages(category_filter=["feedback"]) %}
+                        {% if feedback %}
+                            {%- for response in feedback %}
+                                <div id="feedback" class="flash fade">
+                                    <p>{{ response }}</p>
+                                </div>
+                            {% endfor -%}
+                        {% endif %}
+                    {% endwith %}
                     <div id="button-container">
                         <button type="submit" name="opinion" value=0 class="{{ classes.uninteresting }}"><i
                                 class="fa fa-lg fa-thumbs-down" aria-hidden="true"></i> Ehh... Not great

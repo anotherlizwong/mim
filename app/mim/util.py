@@ -32,7 +32,7 @@ def generate_key():
 
 
 def get_opinion_value(opinion):
-    if opinion is "None":
+    if opinion == "None":
         return 0
     elif opinion:
         return 1
