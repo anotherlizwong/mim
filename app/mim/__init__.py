@@ -2,6 +2,11 @@ from flask import Flask
 from wtforms import Form, BooleanField, RadioField, StringField, PasswordField, validators, IntegerField, Field, \
     SubmitField
 from wtforms.fields.html5 import EmailField
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 
 # flask_app = Flask(__name__)
 # flask_app.config.from_pyfile("settings.py")

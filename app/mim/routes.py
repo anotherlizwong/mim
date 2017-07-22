@@ -1,17 +1,14 @@
 import os
 import random
-from flask import Flask, redirect, render_template, request, session, flash, url_for
-from flask_bcrypt import Bcrypt
-# from flask.ext.csrf import csrf
-from pymongo.errors import DuplicateKeyError
-
-from models import *
-
 import core
 import mendeley_api
 import util
+from flask import Flask, redirect, render_template, request, session, flash, url_for
+from flask_bcrypt import Bcrypt
+from pymongo.errors import DuplicateKeyError
+from models import *
 from . import RegistrationForm
-# from mim import flask_app
+from . import logger
 
 
 flask_app = Flask(__name__)
@@ -24,24 +21,12 @@ bcrypt = Bcrypt(flask_app)
 # csrf(flask_app)
 
 
-# def login_required(f):
-#     @wraps(f)
-#     def wrap(*args, **kwargs):
-#         if 'logged_in' in session:
-#             return f(*args, **kwargs)
-#         else:
-#             flash("You need to login first")
-#             return redirect(url_for('login'))
-#
-#     return wrap
-
-
 @flask_app.route('/')
 def index():
     if 'token' not in session:
         return redirect(url_for('login'))
 
-    rec = core.get_random()
+    rec = core.get_random("Educational Technology")
     name = session.get("name", "friend")
     classes = {
         "interesting": "button-primary",
@@ -84,8 +69,9 @@ def record():
             # except Exception, e:
             #     print e.message
 
-    except:
+    except Exception, e:
         flash("Something went wrong and we couldn't record your response.", "error")
+        logger.error("Could not record opinion.", exc_info=True)
 
     return redirect(url_for('index'))
 
@@ -162,6 +148,8 @@ def login():
                 return redirect(url_for('index'))
         except Exception as e:
             flash("That's not quite right. Try that username and password one more time?", "error")
+            logger.warn("Could log in user.", exc_info=True)
+
     return render_template('login.html', error=error)
 
 
@@ -214,13 +202,8 @@ def register():
 
             return redirect(url_for('index'))
 
-        return render_template("register.html", form=form)
-
     except Exception as e:
         flash(e.message, "error")
-        return render_template('register.html', form=form)
+        logger.error("Issue with registering user.", exc_info=True)
 
-
-# can leave this in probably...
-if __name__ == '__main__':
-    flask_app.run(debug=True)
+    return render_template('register.html', form=form)

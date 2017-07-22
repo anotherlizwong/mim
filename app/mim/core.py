@@ -50,9 +50,9 @@ class Content():
         self.id = id
 
 
-def get_random():
+def get_random(keyword):
     engine = MODULES[random.randint(0,len(MODULES)-1)]
-    search_results = engine.search(Options("Educational Technology", 50))
+    search_results = engine.search(Options(keyword, 50))
     recommendation = search_results[random.randint(0,len(search_results)-1)]
     selection = Content()
     selection.build(recommendation)
