@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import os
 import random
+import isodate
 
 from apiclient.discovery import build
 from apiclient.errors import HttpError
@@ -22,7 +23,11 @@ youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
 def get_one(options):
     videos = search(options) # TODO - Should store these videos fully to use the API less
     single_video = videos[random.randint(0, len(videos)-1)]
-    single_video["description"] = get_full_description(single_video["id"])
+    # get extra details:
+    id = single_video["id"]
+    entry = youtube.videos().list(part='snippet,contentDetails,statistics', id=id).execute()
+    single_video["description"] = get_full_description(id, entry)
+    single_video["duration"] = format_duration(get_duration(id, entry))
     return single_video
 
 
@@ -49,10 +54,10 @@ def format_result(search_result):
     video = {"content_type": "video",
              "id": search_result["id"]["videoId"],
              "title": search_result["snippet"]["title"],
-             "authors": [
+             "author":
                  {"name": search_result["snippet"]["channelTitle"],
                   "url": CHANNEL_URL + search_result["snippet"]["channelId"]}
-             ],
+             ,
              "description": search_result["snippet"]["description"],
              "date": search_result["snippet"]["publishedAt"],
              "url": VIDEO_URL + search_result["id"]["videoId"],
@@ -62,9 +67,35 @@ def format_result(search_result):
     return video
 
 
-def get_full_description(video_id):
-    entry = youtube.videos().list(part='snippet', id=video_id).execute()
+def get_full_description(video_id, entry):
+    '''
+    Full description only loaded in snippet of individual/list of ids pulled back
+    :param video_id: the id of the video(s) to get back [comma separated list if more than one]
+    :return: a string containing the full description of the video
+    '''
+    if entry is None:
+        entry = youtube.videos().list(part='snippet', id=video_id).execute()
     return entry["items"][0]["snippet"]["description"]
+
+
+def get_duration(video_id, entry):
+    if entry is None:
+        entry = youtube.videos().list(part='snippet', id=video_id).execute()
+    return entry["items"][0]["contentDetails"]["duration"]
+
+def format_duration(duration):
+    '''
+    Format Duration string object into human readable format
+    Use tips from https://stackoverflow.com/a/539360
+    :param duration: string object of ISO 8601 duration
+    :return: string formatted (HH:MM:SS)
+    '''
+    dur = isodate.parse_duration(duration)
+    s = dur.total_seconds()
+    h, remainder = divmod(s, 3600)
+    m, s = divmod(remainder, 60)
+    duration = "(%d:%02d:%02d)" % (h,m,s)
+    return duration
 
 
 def example():

@@ -21,9 +21,15 @@
                     <input type="hidden" value="{{ rec.id }}" name="id">
                     <input type="hidden" value="{{ rec.title }}" name="title">
                     <div>
-                        <h3><a href="{{ rec.url }}" target="_blank"> <span id="title">{{ rec.title }}</span></a></h3>
+                        <h3>
+                            <span class="duration">{{ rec.duration }}</span>
+                            <a href="{{ rec.url }}" target="_blank">
+                                <span id="title">{{ rec.title }}</span>
+                            </a>
+                        </h3>
                     </div>
                     {% if rec.content_type == "paper" %}
+                    <p class="author">Published By - {{ rec.author }}</p>
                     <a href="{{ rec.url }}" target="_blank">
                         <i class="fa fa-5x fa-book fa-pull-left fa-border" aria-hidden="true"></i>
                     </a>
@@ -36,9 +42,10 @@
                             <i class="fa fa-5x fa-play-circle" id="video-play-icon" aria-hidden="true"></i>
                         </a>
                     </div>
+                    <p><span class="author">By - <a href="{{ rec.author_url }}" target="_blank">{{ rec.author }}</a></span></p>
                     {% endif %}
                     <div id="description-container">
-                        <p>{{ rec.description }}</p>
+                        <p class="keep-whitespace">{{ rec.description }}</p>
                     </div>
                     <div id="button-container">
                         <button type="submit" name="opinion" value=0 class="{{ classes.uninteresting }}"><i

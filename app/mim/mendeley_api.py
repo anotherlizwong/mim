@@ -43,7 +43,7 @@ def format_results(doc):
     document = {"content_type": "paper",
                 "id": doc.id,
                 "title": doc.title,
-                "author": doc.source,
+                "author": {"name": doc.source},
                 "authors": doc.authors,
                 "description": doc.abstract,
                 "date": doc.year,

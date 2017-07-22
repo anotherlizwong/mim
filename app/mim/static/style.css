@@ -120,3 +120,7 @@ legend {
     left: 230px;
     top: 45%;
 }
+
+.keep-whitespace {
+    white-space: pre-line;
+}
