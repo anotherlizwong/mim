@@ -43,21 +43,6 @@ def get_opinion_value(opinion):
     }.get(rating, 0)
 
 
-def get_unique(list):
-    '''
-    Check the database to see if the user already rated any items in the list.
-    Remove those items from the list
-    :param list:
-    :return: [list with unique content, may be empty]
-    '''
-    unique_list = []
-    user = get_user()
-    for item in list:
-        if not models.already_seen(user, item["id"]):
-            unique_list.append(item)
-    return unique_list
-
-
 def get_user():
     return session["email"]
 
@@ -78,3 +63,18 @@ def get_rating_class(rating):
         "1": "fa-thumbs-up",
         "-1": "fa-thumbs-down"
     }.get(rating, "0")
+
+
+def get_unique(list):
+    '''
+    Check the database to see if the user already rated any items in the list.
+    Remove those items from the list
+    :param list:
+    :return: [list with unique content, may be empty]
+    '''
+    unique_list = []
+    user = get_user()
+    for item in list:
+        if models.already_seen(user, item["id"]) == False:
+            unique_list.append(item)
+    return unique_list

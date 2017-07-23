@@ -40,14 +40,12 @@ class History(Document):
     rec_id = ObjectIdField()
 
 
-def already_seen(user, docId):
-    if user_history.find({
-        "user": user,
-        "content": {"id": docId}
-    }).limit(1).count() > 0:
-        return True
-    else:
-        return False
+def already_seen(user, doc_id):
+    existing = get_user_history(user)
+    for item in existing:
+        if item["content"]["id"] == doc_id:
+            return True
+    return False
 
 
 def get_user_history(user):

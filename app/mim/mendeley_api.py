@@ -21,22 +21,37 @@ def get_session_from_cookies():
 
 
 def get_one(options):
-    documents = search(options)
-    one_document = documents[random.randint(0, len(documents)-1)]
+    documents, page = search(options)
+
+    # ensure unique results based on user history
+    documents = util.get_unique(documents)
+    if len(documents) > 0:
+        one_document = documents[random.randint(0, len(documents)-1)]
+    else:
+        # if there aren't any unique documents, go to the next page of search results
+        options.pageToken = page.next_page
+        if options.pageToken is None:
+            return None # if it's the last page of the search, stop
+        else:
+            return get_one(options)
+
     return one_document
 
 
 def search(options):
-    search_results = session.catalog.search(
-        query=options.q,
-        view="client"
-    ).list(page_size=options.max_results).items
+    if options.pageToken is None:
+        search_results = session.catalog.search(
+            query=options.q,
+            view="client"
+        ).list(page_size=options.max_results)
+    else:
+        search_results = options.pageToken
 
     docs = []
-    for doc in search_results:
+    for doc in search_results.items:
         docs.append(format_results(doc))
 
-    return docs
+    return docs, search_results
 
 
 def format_results(doc):
