@@ -170,9 +170,10 @@ def logout():
 @flask_app.route('/register', methods=["GET", "POST"])
 def register():
     try:
-        form = RegistrationForm(request.form)
 
         if request.method == "POST" and form.validate():
+            form = RegistrationForm(request.form)
+
             email = form.email.data
             password = bcrypt.generate_password_hash(str(form.password.data), 10)
             name = form.name.data.capitalize()
@@ -205,6 +206,9 @@ def register():
             session['name'] = name
 
             return redirect(url_for('index'))
+
+        else:
+            form = RegistrationForm()
 
     except Exception as e:
         flash(e.message, "error")
