@@ -31,7 +31,7 @@ def get_one(options):
         # if there aren't any unique documents, go to the next page of search results
         options.pageToken = page.next_page
         if options.pageToken is None:
-            return None # if it's the last page of the search, stop
+            return None  # if it's the last page of the search, stop
         else:
             return get_one(options)
 
