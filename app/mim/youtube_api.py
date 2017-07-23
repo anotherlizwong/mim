@@ -20,9 +20,19 @@ CHANNEL_URL = "https://youtube.com/channel/"
 youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
                 developerKey=DEVELOPER_KEY)
 
+
 def get_one(options):
-    videos = search(options) # TODO - Should store these videos fully to use the API less
-    single_video = videos[random.randint(0, len(videos)-1)]
+    videos, nextPage = search(options) # TODO - Should store these videos fully to use the API less
+
+    # ensure unique result based on user history
+    videos = util.get_unique(videos)
+    if len(videos) > 0:
+        single_video = videos[random.randint(0, len(videos)-1)]
+    else:
+        # if there aren't any unique videos, go to the next page and search again
+        options.pageToken = nextPage
+        return get_one(options)
+
     # get extra details:
     id = single_video["id"]
     entry = youtube.videos().list(part='snippet,contentDetails,statistics', id=id).execute()
@@ -37,7 +47,8 @@ def search(options):
     search_response = youtube.search().list(
         q=options.q,
         part="id,snippet",
-        maxResults=options.max_results
+        maxResults=options.max_results,
+        pageToken=options.pageToken
     ).execute()
 
     videos = []
@@ -47,7 +58,7 @@ def search(options):
         if search_result["id"]["kind"] == "youtube#video":
             videos.append(format_result(search_result))
 
-    return videos
+    return videos, search_response["nextPageToken"]
 
 
 def format_result(search_result):

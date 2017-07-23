@@ -15,7 +15,7 @@ if "pw" in os.environ:
                              database +
                              "?ssl=true&replicaSet=MimCluster-shard-0&authSource=admin")
 else:
-    client = MongoClient('localhost',27017)
+    client = MongoClient('localhost', 27017)
 
 # get the sampleDB database
 
@@ -40,3 +40,11 @@ class History(Document):
     rec_id = ObjectIdField()
 
 
+def already_seen(user, docId):
+    if user_history.find({
+        "content": {"id": docId},
+        "opinion": {"user": user}
+    }).limit(1).count() > 0:
+        return True
+    else:
+        return False
