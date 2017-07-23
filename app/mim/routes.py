@@ -7,7 +7,7 @@ from flask import Flask, redirect, render_template, request, session, flash, url
 from flask_bcrypt import Bcrypt
 from pymongo.errors import DuplicateKeyError
 from models import *
-from . import RegistrationForm
+from . import RegistrationForm as r
 from . import logger
 
 
@@ -170,9 +170,9 @@ def logout():
 @flask_app.route('/register', methods=["GET", "POST"])
 def register():
     try:
+        form = r.RegistrationForm(request.form)
 
         if request.method == "POST" and form.validate():
-            form = RegistrationForm(request.form)
 
             email = form.email.data
             password = bcrypt.generate_password_hash(str(form.password.data), 10)
@@ -206,9 +206,6 @@ def register():
             session['name'] = name
 
             return redirect(url_for('index'))
-
-        else:
-            form = RegistrationForm()
 
     except Exception as e:
         flash(e.message, "error")
