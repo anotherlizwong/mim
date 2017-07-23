@@ -9,3 +9,5 @@ mongoengine==0.13.0
 WTForms==2.1
 gunicorn==19.7.1
 isodate==0.5.4
+GraphLab-Create==2.1
+GraphLab-Create-License==2.1

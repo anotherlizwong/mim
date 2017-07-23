@@ -214,20 +214,20 @@ def register():
     return render_template('register.html', form=form)
 
 
-# While the data model is in flux, it's helpful to have a quick dump method
-if "data_purge" in os.environ:
-    secret_route = os.environ["data_purge"]
-else:
-    secret_route = "/dumpData"
-
-
-@flask_app.route(secret_route)
-def purge_data():
-    try:
-        logger.warn("Dumping users and history data.")
-        user_history.remove({})
-        users.remove({})
-        flash("All users and history data purged.","error")
-    except:
-        logger.error("Could not dump user history data.", exc_info=True)
-    return redirect(url_for('index'))
+# # While the data model is in flux, it's helpful to have a quick dump method
+# if "data_purge" in os.environ:
+#     secret_route = os.environ["data_purge"]
+# else:
+#     secret_route = "/dumpData"
+#
+#
+# @flask_app.route(secret_route)
+# def purge_data():
+#     try:
+#         logger.warn("Dumping users and history data.")
+#         user_history.remove({})
+#         users.remove({})
+#         flash("All users and history data purged.","error")
+#     except:
+#         logger.error("Could not dump user history data.", exc_info=True)
+#     return redirect(url_for('index'))
