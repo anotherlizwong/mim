@@ -223,9 +223,10 @@ else:
 @flask_app.route(secret_route)
 def purge_data():
     try:
-        logger.warn("Dumping user history data.")
+        logger.warn("Dumping users and history data.")
         user_history.remove({})
-        flash("All user history data purged.","error")
+        users.remove({})
+        flash("All users and history data purged.","error")
     except:
         logger.error("Could not dump user history data.", exc_info=True)
     return redirect(url_for('index'))
