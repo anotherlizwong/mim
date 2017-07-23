@@ -61,10 +61,10 @@ def record():
                     "content": doc,
                     "opinion": opinion})
             except Exception, e:
-                flash(e.message)
-
-            if opinion["opinion"] is not 0:
-                flash("Thanks for your feedback!", "feedback")
+                flash(e.message, "error")
+                logger.error("Error recording opinion.", exc_info=True)
+            # if opinion["opinion"] is not 0:
+            #     flash("Thanks for your feedback!", "feedback")
 
             try:
                 if "tokens" in os.environ:
