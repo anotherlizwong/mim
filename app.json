@@ -1,0 +1,69 @@
+{
+  "name": "mim-test",
+  "description": "",
+  "scripts": {
+  },
+  "env": {
+    "data_purge": {
+      "required": true
+    },
+    "db": {
+      "required": true
+    },
+    "MENDELEY_ID": {
+      "required": true
+    },
+    "MENDELEY_SECRET": {
+      "required": true
+    },
+    "pw": {
+      "required": true
+    },
+    "SECRET_KEY": {
+      "required": true
+    },
+    "token1": {
+      "required": true
+    },
+    "token2": {
+      "required": true
+    },
+    "token3": {
+      "required": true
+    },
+    "token4": {
+      "required": true
+    },
+    "token5": {
+      "required": true
+    },
+    "token6": {
+      "required": true
+    },
+    "token7": {
+      "required": true
+    },
+    "token8": {
+      "required": true
+    },
+    "tokens": {
+      "required": true
+    },
+    "YOUTUBE_ID": {
+      "required": true
+    },
+    "YOUTUBE_SECRET": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
