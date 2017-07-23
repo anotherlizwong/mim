@@ -135,3 +135,26 @@ legend {
     font-size: .75em;
     color: #AAAAAA;
 }
+
+.item {
+    width: 100%;
+    margin: 5px 0;
+}
+.item > div {
+    display: inline-block;
+}
+.item i {
+    size: 1.5em;
+}
+.item .fa-thumbs-down {
+    color: #cc0000;
+}
+.item .fa-thumbs-up {
+    color: green;
+}
+.item .fa-meh-o {
+    color: #CCCCCC;
+}
+.history > h5 {
+    margin-bottom: .5rem;
+}

@@ -58,7 +58,7 @@
                         {% endif %}
                     {% endwith %}
                     <div id="button-container">
-                        <button type="submit" name="opinion" value=0 class="{{ classes.uninteresting }}"><i
+                        <button type="submit" name="opinion" value=-1 class="{{ classes.uninteresting }}"><i
                                 class="fa fa-lg fa-thumbs-down" aria-hidden="true"></i> Ehh... Not great
                         </button>
                         <button type="submit" name="opinion" value=1 class="u-pull-right {{ classes.interesting }}"><i
@@ -92,5 +92,32 @@
         </div>
     </div>
 </form>
+
+{% if history %}
+<div class="container">
+    <div class="row">
+        <div class="two-thirds columns history">
+            {% for item in history %}
+                <h5>Your Recent Ratings</h5>
+                <div class="item">
+                    <div class="item-rating">
+                        <i class="{{ 'fa ' + item.rating_class }}" aria-label="{{ item.rating_text }}"></i>
+                    </div>
+                    <div class="item-type">
+                        {% if item.content_type == "video" %}
+                            <i class="fa fa-video-camera" aria-label="video"></i>
+                        {% else %}
+                            <i class="fa fa-book" aria-label="document"></i>
+                        {% endif %}
+                    </div>
+                    <div class="item-name">
+                        <a href="{{ item.url }}" target="_blank">{{ item.title}}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
 
 {% endblock %}

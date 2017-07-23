@@ -35,12 +35,12 @@ def generate_key():
 
 
 def get_opinion_value(opinion):
-    if opinion == "None":
-        return 0
-    elif opinion:
-        return 1
-    else:
-        return -1
+    rating = str(opinion)
+    return {
+        "None": 0,
+        "1": 1,
+        "-1": -1
+    }.get(rating, 0)
 
 
 def get_unique(list):
@@ -60,3 +60,21 @@ def get_unique(list):
 
 def get_user():
     return session["email"]
+
+
+def get_rating_text(rating):
+    rating = str(rating)
+    return {
+        "0": "No opinion",
+        "1": "Liked",
+        "-1": "Disliked"
+    }.get(rating, "0")
+
+
+def get_rating_class(rating):
+    rating = str(rating)
+    return {
+        "0": "fa-meh-o",
+        "1": "fa-thumbs-up",
+        "-1": "fa-thumbs-down"
+    }.get(rating, "0")

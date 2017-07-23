@@ -27,6 +27,7 @@ def index():
         return redirect(url_for('login'))
 
     rec = core.get_random("Educational Technology")
+    historical_data = core.get_history(session["email"])
     name = session.get("name", "friend")
     classes = {
         "interesting": "button-primary",
@@ -37,7 +38,8 @@ def index():
     return render_template('index.html',
                            rec=rec,
                            name=name,
-                           classes=classes)
+                           classes=classes,
+                           history=historical_data)
 
 @flask_app.route('/record', methods=['GET', 'POST'])
 def record():
@@ -50,13 +52,14 @@ def record():
                 "title": request.form["title"],
             }
             opinion = {
-                "user": session["email"],
                 "opinion": util.get_opinion_value(request.form["opinion"]),
                 "rec_id": request.form["id"]
             }
             try:
-                user_history.insert({"content": doc,
-                                     "opinion": opinion})
+                user_history.insert({
+                    "user": session["email"],
+                    "content": doc,
+                    "opinion": opinion})
             except Exception, e:
                 flash(e.message)
 
@@ -208,3 +211,21 @@ def register():
         logger.error("Issue with registering user.", exc_info=True)
 
     return render_template('register.html', form=form)
+
+
+# While the data model is in flux, it's helpful to have a quick dump method
+if "data_purge" in os.environ:
+    secret_route = os.environ["data_purge"]
+else:
+    secret_route = "/dumpData"
+
+
+@flask_app.route(secret_route)
+def purge_data():
+    try:
+        logger.warn("Dumping user history data.")
+        user_history.remove({})
+        flash("All user history data purged.","error")
+    except:
+        logger.error("Could not dump user history data.", exc_info=True)
+    return redirect(url_for('index'))

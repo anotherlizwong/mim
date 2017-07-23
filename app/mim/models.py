@@ -42,9 +42,13 @@ class History(Document):
 
 def already_seen(user, docId):
     if user_history.find({
-        "content": {"id": docId},
-        "opinion": {"user": user}
+        "user": user,
+        "content": {"id": docId}
     }).limit(1).count() > 0:
         return True
     else:
         return False
+
+
+def get_user_history(user):
+    return user_history.find({"user": user})
