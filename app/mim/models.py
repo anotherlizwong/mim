@@ -51,13 +51,13 @@ def already_seen(user, doc_id):
 
 
 def get_user_history(user=None, as_json=False):
-    '''
+    """
     Get user history of a single user or all users
     Can be returned as json for consumption by a recommender or a mongodb document
     :param user: Optional String, would be username if supplied
     :param as_json: Optional Boolean, defaulted to False
     :return: Either a mongodb document or a json string
-    '''
+    """
     if user is not None:
         user = {"user": user}
     else:
