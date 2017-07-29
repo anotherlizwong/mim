@@ -7,14 +7,13 @@ import os
 from pandas.io.json import json_normalize
 from . import logger
 
+gl.get_dependencies()
 
 MODEL_LOCATION = "user_model"
 
 if "graphlab_key" in os.environ:
     # gl.set_runtime_config("product_key",os.environ["graphlab_key"])
     gl.product_key.set_product_key(os.environ["graphlab_key"])
-
-gl.get_dependencies()
 
 
 def load_training_data(all_users=True):
