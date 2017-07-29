@@ -7,6 +7,8 @@ import Recommender as r
 from apiclient.discovery import build
 from apiclient.errors import HttpError
 
+from . import logger
+
 import util
 
 YOUTUBE_API_SERVICE_NAME = "youtube"
@@ -129,6 +131,7 @@ def pick_option(videos):
         }
         options.append(option)
     predictions = r.predict_options(options)
+    logger.info("prediction values: ", predictions)
 
     return video
 
