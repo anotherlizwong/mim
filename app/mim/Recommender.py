@@ -2,6 +2,7 @@ import graphlab as gl
 import models
 import util
 import json
+import flatten_json
 import os
 from pandas.io.json import json_normalize
 from . import logger
@@ -30,7 +31,11 @@ def load_training_data(all_users=True):
 
     # write the latest database value
     # TODO: optimize to load direct from database
-    file_content = json_normalize(models.get_user_history(user))
+    json_string = models.get_user_history(user, True)
+    user_history_json = json.loads(json_string)
+    file_content = []
+    for history_dict in user_history_json:
+        file_content.append(flatten_json.flatten(history_dict))
     with open(filename, "w") as outfile:
         json.dump(file_content, outfile)
 
@@ -50,8 +55,8 @@ def load_training_data(all_users=True):
 def train():
     train_data, test_data = load_training_data()
     my_features_model = gl.recommender.item_similarity_recommender.create(
-        train_data, user_id="user", item_id="content.id", target="opinion.opinion")
-    logger.info("model quality: "+my_features_model.evaluate_rmse(test_data, target="opinion.opinion"))
+        train_data, user_id="user", item_id="content_id", target="opinion_opinion")
+    logger.info("model quality: "+my_features_model.evaluate_rmse(test_data, target="opinion_opinion"))
 
     try:
         my_features_model.save(MODEL_LOCATION)
@@ -62,7 +67,7 @@ def train():
     return my_features_model
 
 
-def predict_option(options):
+def predict_options(options):
     """
     Run predictions on potential options
     :param options: array of dictionary, expected format [{"user": __, "content.id": __}]
@@ -75,11 +80,11 @@ def predict_option(options):
         logger.warn("couldn't load module, re-training", exc_info=True)
         model = train()
 
-    if "user" in options and "content.id" in options:
+    if "user" in options and "content_id" in options:
         prediction = model.predict(options)
         logger.info("prediction: " + prediction)
     else:
-        logger.error("options not in the correct format, expected key 'user' and key 'content.id' got: "
+        logger.error("options not in the correct format, expected key 'user' and key 'content_id' got: "
                      + options.keys())
         prediction = None
 

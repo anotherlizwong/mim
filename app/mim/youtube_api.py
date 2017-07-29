@@ -2,6 +2,7 @@
 import os
 import random
 import isodate
+import Recommender as r
 
 from apiclient.discovery import build
 from apiclient.errors import HttpError
@@ -11,7 +12,7 @@ import util
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 if 'YOUTUBE_ID' in os.environ:
-    YOUTUBE_APP_ID, DEVELOPER_KEY = os.environ['YOUTUBE_ID'], os.environ['YOUTUBE_SECRET'] # helpers.secretkey_config("youtube")
+    YOUTUBE_APP_ID, DEVELOPER_KEY = os.environ['YOUTUBE_ID'], os.environ['YOUTUBE_SECRET']
 else:
     YOUTUBE_APP_ID, DEVELOPER_KEY = util.secretkey_config("youtube")
 VIDEO_URL = "https://youtube.com/watch?v="
@@ -27,7 +28,7 @@ def get_one(options):
     # ensure unique result based on user history
     videos = util.get_unique(videos)
     if len(videos) > 0:
-        single_video = videos[random.randint(0, len(videos)-1)]
+        pick_option(videos)
     else:
         # if there aren't any unique videos, go to the next page and search again
         options.pageToken = nextPage
@@ -107,6 +108,29 @@ def format_duration(duration):
     m, s = divmod(remainder, 60)
     duration = "(%d:%02d:%02d)" % (h,m,s)
     return duration
+
+
+def pick_option(videos):
+    """
+    Pick a video from the list using recommendation score or random if rec scores all too low
+    :param videos: an array of videos formatted in format_results()
+    :return: A single video option
+    """
+    # random choice (default)
+    video = videos[random.randint(0, len(videos) - 1)]
+
+    # use recommendation engine
+    options = []
+    user = util.get_user()
+    for v in videos:
+        option = {
+            "user": user,
+            "content.id": v["id"]
+        }
+        options.append(option)
+    predictions = r.predict_options(options)
+
+    return video
 
 
 def example():

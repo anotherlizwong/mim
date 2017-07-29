@@ -3,7 +3,7 @@ import os
 import json
 from pymongo import MongoClient
 from mongoengine import *
-from bson import json_util
+from bson.json_util import dumps
 
 # client = MongoClient('localhost',27017)
 if "pw" in os.environ:
@@ -66,6 +66,6 @@ def get_user_history(user=None, as_json=False):
     doc = user_history.find(user)
 
     if as_json:
-        return json.dumps(doc, sort_keys=True, indent=4, default=json_util.default)
+        return dumps(doc)
     else:
         return doc
