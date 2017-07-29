@@ -6,7 +6,11 @@ import os
 from pandas.io.json import json_normalize
 from . import logger
 
+
+MODEL_LOCATION = "user_model"
+
 if "graphlab_key" in os.environ:
+    # gl.set_runtime_config("product_key",os.environ["graphlab_key"])
     gl.product_key.set_product_key(os.environ["graphlab_key"])
 
 
@@ -18,10 +22,11 @@ def load_training_data(all_users=True):
     """
     if all_users:
         user = None
+        filename = "data_all.txt"
     else:
         user = util.get_user()
+        filename = "data_"+user+".txt"
 
-    filename = "data_"+user+".txt"
 
     # write the latest database value
     # TODO: optimize to load direct from database
@@ -33,6 +38,7 @@ def load_training_data(all_users=True):
     training_data = gl.SFrame.read_json(url=filename, orient="records")
 
     # kill temporary file now that data is loaded
+    # TODO: when the recommender trains once daily, don't delete the file
     try:
         os.remove(filename)
     except OSError:
@@ -43,17 +49,39 @@ def load_training_data(all_users=True):
 
 def train():
     train_data, test_data = load_training_data()
-    my_features = ["content.id", "content.content_type"]
-    # TODO - I'm not sure that linear_regression is the thing I want to do here, maybe kNN?
-    my_features_model = gl.linear_regression.create(train_data, target="opinion", features=my_features, validation_set=None)
-    logger.info("model quality: "+my_features_model.evaluate(test_data))
+    my_features_model = gl.recommender.item_similarity_recommender.create(
+        train_data, user_id="user", item_id="content.id", target="opinion.opinion")
+    logger.info("model quality: "+my_features_model.evaluate_rmse(test_data, target="opinion.opinion"))
+
+    try:
+        my_features_model.save(MODEL_LOCATION)
+    except:
+        logger.error("couldn't save model", exc_info=True)
+        pass
+
     return my_features_model
 
 
-def predict_option(option):
+def predict_option(options):
+    """
+    Run predictions on potential options
+    :param options: array of dictionary, expected format [{"user": __, "content.id": __}]
+    :return: an array with predicted scores for each option; None if invalid
+    """
     # TODO - Need to format option in a way that makes sense for the predictor
-    model = train()
-    prediction = model.predict(option)
-    logger.info("prediction: "+prediction)
+    if os.path.exists(MODEL_LOCATION):
+        model = gl.load_model(MODEL_LOCATION)
+    else:
+        logger.warn("couldn't load module, re-training", exc_info=True)
+        model = train()
+
+    if "user" in options and "content.id" in options:
+        prediction = model.predict(options)
+        logger.info("prediction: " + prediction)
+    else:
+        logger.error("options not in the correct format, expected key 'user' and key 'content.id' got: "
+                     + options.keys())
+        prediction = None
+
     return prediction
 
