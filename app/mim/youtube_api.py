@@ -30,7 +30,7 @@ def get_one(options):
     # ensure unique result based on user history
     videos = util.get_unique(videos)
     if len(videos) > 0:
-        pick_option(videos)
+        single_video = pick_option(videos)
     else:
         # if there aren't any unique videos, go to the next page and search again
         options.pageToken = nextPage
