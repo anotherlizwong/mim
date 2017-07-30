@@ -27,7 +27,7 @@ def index():
         return redirect(url_for('login'))
 
     content_topic = "Educational Technology"
-    if request.method == "GET":
+    if request.method == "GET" and request.args.get("q") is not None:
         content_topic = request.args.get("q")
 
     rec = core.get_content(content_topic)
