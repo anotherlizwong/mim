@@ -131,7 +131,9 @@ def pick_option(videos):
         }
         options.append(option)
     predictions = r.predict_options(options)
-    logger.info("prediction values: ", predictions)
+    if max(predictions) is not 0:
+        # pick the highest predicted value, otherwise if no prediction available do random
+        video = videos[predictions.index(max(predictions))]
 
     return video
 

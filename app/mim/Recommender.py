@@ -97,10 +97,10 @@ def predict_options(options):
         content = gl.SArray(temp_content)
         frame = gl.SFrame({"user": users, "content_id": content}, format="dict")
         prediction = model.predict(frame)
-        logger.info("prediction: ", prediction)
+        logger.info("prediction: ", str(prediction))
     else:
         logger.error("options not in the correct format, expected key 'user' and key 'content_id'")
         prediction = None
 
-    return prediction
+    return list(prediction)
 
