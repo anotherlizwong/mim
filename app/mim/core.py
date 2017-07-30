@@ -11,7 +11,7 @@ DESCRIPTION_LIMIT = 100
 MODULES = [youtube, mendeley]
 
 
-def get_random(keyword):
+def get_content(keyword):
     engine = MODULES[random.randint(0, len(MODULES)-1)]
     selection = c.Content()
     selection.build(engine.get_one(o.Options(keyword, 25)))
