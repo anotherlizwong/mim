@@ -88,7 +88,15 @@ def predict_options(options):
         model = train()
 
     if "user" in options[0] and "content_id" in options[0]:
-        prediction = model.predict(options)
+        temp_users = []
+        temp_content = []
+        for option in options:
+            temp_users.append(option["user"])
+            temp_content.append(option["content_id"])
+        users = gl.SArray(temp_users)
+        content = gl.SArray(temp_content)
+        frame = gl.SFrame({"user": users, "content_id": content}, format="dict")
+        prediction = model.predict(frame)
         logger.info("prediction: ", prediction)
     else:
         logger.error("options not in the correct format, expected key 'user' and key 'content_id'")

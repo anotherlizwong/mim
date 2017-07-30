@@ -127,7 +127,7 @@ def pick_option(videos):
     for v in videos:
         option = {
             "user": user,
-            "content.id": v["id"]
+            "content_id": v["id"]
         }
         options.append(option)
     predictions = r.predict_options(options)
