@@ -21,12 +21,16 @@ bcrypt = Bcrypt(flask_app)
 # csrf(flask_app)
 
 
-@flask_app.route('/')
+@flask_app.route('/', methods=['GET'])
 def index():
     if 'token' not in session:
         return redirect(url_for('login'))
 
-    rec = core.get_random("Educational Technology")
+    content_topic = "Educational Technology"
+    if request.method == "GET":
+        content_topic = request.args.get("q")
+
+    rec = core.get_content(content_topic)
     historical_data = core.get_history(session["email"])
     name = session.get("name", "friend")
     classes = {
@@ -39,7 +43,8 @@ def index():
                            rec=rec,
                            name=name,
                            classes=classes,
-                           history=historical_data)
+                           history=historical_data,
+                           topic=content_topic)
 
 @flask_app.route('/record', methods=['GET', 'POST'])
 def record():
