@@ -104,3 +104,4 @@ env/
 # PyCharm project configs
 .idea/
 client_secrets.json
+user_model

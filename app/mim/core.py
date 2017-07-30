@@ -30,3 +30,5 @@ def get_history(username):
            "title": item["content"]["title"]
        })
     return reversed(history)
+
+

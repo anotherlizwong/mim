@@ -1,17 +1,19 @@
 #!/usr/bin/python
 import os
-import random
 import isodate
+import Recommender as rec
 
 from apiclient.discovery import build
 from apiclient.errors import HttpError
+
+from . import logger
 
 import util
 
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 if 'YOUTUBE_ID' in os.environ:
-    YOUTUBE_APP_ID, DEVELOPER_KEY = os.environ['YOUTUBE_ID'], os.environ['YOUTUBE_SECRET'] # helpers.secretkey_config("youtube")
+    YOUTUBE_APP_ID, DEVELOPER_KEY = os.environ['YOUTUBE_ID'], os.environ['YOUTUBE_SECRET']
 else:
     YOUTUBE_APP_ID, DEVELOPER_KEY = util.secretkey_config("youtube")
 VIDEO_URL = "https://youtube.com/watch?v="
@@ -27,7 +29,7 @@ def get_one(options):
     # ensure unique result based on user history
     videos = util.get_unique(videos)
     if len(videos) > 0:
-        single_video = videos[random.randint(0, len(videos)-1)]
+        single_video = rec.pick_option(videos)
     else:
         # if there aren't any unique videos, go to the next page and search again
         options.pageToken = nextPage

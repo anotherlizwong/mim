@@ -1,7 +1,9 @@
 import pymongo
 import os
+import json
 from pymongo import MongoClient
 from mongoengine import *
+from bson.json_util import dumps
 
 # client = MongoClient('localhost',27017)
 if "pw" in os.environ:
@@ -48,5 +50,22 @@ def already_seen(user, doc_id):
     return False
 
 
-def get_user_history(user):
-    return user_history.find({"user": user})
+def get_user_history(user=None, as_json=False):
+    """
+    Get user history of a single user or all users
+    Can be returned as json for consumption by a recommender or a mongodb document
+    :param user: Optional String, would be username if supplied
+    :param as_json: Optional Boolean, defaulted to False
+    :return: Either a mongodb document or a json string
+    """
+    if user is not None:
+        user = {"user": user}
+    else:
+        user = {}
+
+    doc = user_history.find(user)
+
+    if as_json:
+        return dumps(doc)
+    else:
+        return doc
