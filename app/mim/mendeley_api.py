@@ -62,7 +62,7 @@ def format_results(doc):
                 "authors": doc.authors,
                 "description": doc.abstract,
                 "date": doc.year,
-                "url": doc.link,
+                "url": find_actual_doc_url(doc)
                 }
 
     return document
@@ -77,4 +77,17 @@ def example():
         print "An error occurred:\n%s" % e.message
 
 
+def find_actual_doc_url(doc):
+    url = doc.link
+    if doc.source is not None and doc.year is not None:
+        query_terms = "\"" + doc.title + "\"" + " " + doc.source + " " + str(doc.year)
+        if doc.identifiers is not None and "isbn" in doc.identifiers:
+            query_terms += " isbn:" + doc.identifiers["isbn"]
+        query_terms = query_terms.replace(" ", "%20")
+        google_lucky = "http://www.google.com/search?q=" + query_terms + "&btnI"
+        url = google_lucky
+    return url
+
+
 # example()
+
