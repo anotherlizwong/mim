@@ -1,10 +1,10 @@
 import os
+import util
 
 from mendeley import Mendeley
 from mendeley.session import MendeleySession
+import Recommender as rec
 
-import util
-import random
 
 if 'MENDELEY_ID' in os.environ:
     MENDELEY_APP_ID, MENDELEY_KEY = os.environ['MENDELEY_ID'], os.environ['MENDELEY_SECRET']
@@ -26,7 +26,7 @@ def get_one(options):
     # ensure unique results based on user history
     documents = util.get_unique(documents)
     if len(documents) > 0:
-        one_document = documents[random.randint(0, len(documents)-1)]
+        one_document = rec.pick_option(documents)
     else:
         # if there aren't any unique documents, go to the next page of search results
         options.pageToken = page.next_page

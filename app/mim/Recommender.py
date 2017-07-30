@@ -4,6 +4,7 @@ import util
 import json
 import flatten_json
 import os
+import random
 from pandas.io.json import json_normalize
 from . import logger
 
@@ -104,3 +105,28 @@ def predict_options(options):
 
     return list(prediction)
 
+
+def pick_option(choices):
+    """
+    Pick an option from the list using recommendation score or random if rec scores all too low
+    :param choices: an array of videos formatted in format_results()
+    :return: A single video option
+    """
+    # random choice (default)
+    final_choice = choices[random.randint(0, len(choices) - 1)]
+
+    # use recommendation engine
+    options = []
+    user = util.get_user()
+    for v in choices:
+        option = {
+            "user": user,
+            "content_id": v["id"]
+        }
+        options.append(option)
+    predictions = predict_options(options)
+    if max(predictions) is not 0:
+        # pick the highest predicted value, otherwise if no prediction available do random
+        final_choice = choices[predictions.index(max(predictions))]
+
+    return final_choice
